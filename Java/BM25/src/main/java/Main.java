@@ -14,7 +14,7 @@ public class Main {
     static public void main(String args[]) {
 
         ArrayList<Document> document_list = new ArrayList<Document>();
-        String path = "data/pdfs/";
+        String path = "../../data/pdfs/";
         File directory = new File(path);
         File[] files = directory.listFiles();
 

@@ -30,3 +30,4 @@ doc_score :: Document -> [Token] -> Double
 doc_score doc [] = 0
 doc_score doc (x:xs) = let freq_in_doc = token_freq x doc in let doc_rate = ((fromIntegral $ length doc)/avgdl) in
                      (doc_score doc xs) + ((iDF x) * freq_in_doc)/(freq_in_doc + k*(1 - b*(1 + doc_rate)))
+

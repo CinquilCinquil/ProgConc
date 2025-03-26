@@ -5,9 +5,8 @@ import Pdf.Document
 import DocReader
 import BM25
 
---documents :: [Document] = [["oi", "3", "aaaa"], ["oi", "x", "wgompa"], []]
 -- falta ler mais de uma página
--- falta ler todos os docs de uma página
+-- falta ler todos os docs de um arquivo
 
 query :: [Token] = tokenizer ("enter your query here")
 

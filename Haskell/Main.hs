@@ -6,9 +6,9 @@ import DocReader
 import BM25
 
 -- falta ler mais de uma página
--- falta ler todos os docs de um arquivo
+-- falta ler todos os docs de um diretório
 
-query :: [Token] = tokenizer ("enter your query here")
+query :: [Token] = tokenizer ("query")
 
 main = do
        tokens <- tokenizeDoc "input.pdf"

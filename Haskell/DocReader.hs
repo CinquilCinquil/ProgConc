@@ -9,6 +9,7 @@ import Pdf.Document
 ------------ External
 
 type PdfText = IO Text
+--type PageNode = Pdf.Document.PageNode
 
 tokenizeDoc :: String -> IO ([String])
 tokenizeDoc nameOfFile = withPdfFile nameOfFile $ \pdf -> do
@@ -16,9 +17,8 @@ tokenizeDoc nameOfFile = withPdfFile nameOfFile $ \pdf -> do
     catalog <- documentCatalog doc
     rootNode <- catalogPageNode catalog
     count <- pageNodeNKids rootNode
-    page <- pageNodePageByNum rootNode 0
-    text <- pageExtractText page
-    return map clean_str (tokenizer $ show text)
+    text <- tokenizePages rootNode (count - 1)
+    return $ map clean_str (tokenizer $ show text)
 
 tokenizer :: String -> [String]
 tokenizer "" = []
@@ -29,7 +29,7 @@ tokenizer (x:xs) = conct_to_head x (tokenizer xs)
 ------------ Internal
 
 clean_str :: String -> String
-clearn_str s = remove_str "\"" (remove_sequence_of_str ["\\", "n"] s)
+clean_str s = remove_str "\\" $ remove_str "\"" $ (remove_sequence_of_str ["\\", "n"] s)
 
 conct_to_head :: Char -> [String] -> [String]
 conct_to_head c [] = [[c]]
@@ -57,3 +57,11 @@ remove_sequence_of_str ((x':[]):xs) (y:ys) = if x' == y then
 remove_sequence_of_str ((x':xs'):[]) (y:ys) = if x' == y then ys else y:(remove_sequence_of_str (xs':[]) ys)
 remove_sequence_of_str ((x':xs'):xs) (y:ys) = if fits_at_ys_start (x':xs') (y:ys)
                 then remove_sequence_of_str (xs':xs) ys else y:(remove_sequence_of_str ((x':xs'):xs) ys)
+
+tokenizePages :: PageNode -> Int -> IO String
+tokenizePages rootNode (-1) = return ""
+tokenizePages rootNode count = do
+                                txt1 <- (tokenizePages rootNode (count-1))
+                                page <- pageNodePageByNum rootNode count
+                                txt2 <- (pageExtractText page)
+                                return $ txt1 ++ (show txt2)

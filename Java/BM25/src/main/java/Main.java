@@ -1,6 +1,7 @@
 import Models.BM25;
 import Models.Document;
 import Models.Query;
+import Models.WorkerManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,9 +20,26 @@ public class Main {
         File[] files = directory.listFiles();
 
         if (files != null) {
+
+            WorkerManager workerManager = new WorkerManager();
+
             for (File file : files) {
-                document_list.add(new Document(path + file.getName()));
+
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        document_list.add(new Document(path + file.getName()));
+                    }
+                };
+                Thread t = Thread.ofVirtual().start(runnable);
+
+                workerManager.addWorker(t);
             }
+
+            while (workerManager.workers_alive()) {}
+        }
+        else {
+            System.out.println("No documents found");
         }
 
         System.out.println("Finished reading docs. Now calculating score...");

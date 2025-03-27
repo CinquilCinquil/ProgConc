@@ -76,7 +76,7 @@ public class BM25 {
         }
 
         Auction auction = new Auction();
-        ArrayList<Thread> workers = new ArrayList<Thread>();
+        WorkerManager workerManager = new WorkerManager();
 
         for (Document doc : docs) {
             Thread t = new Thread(new Runnable() {
@@ -87,17 +87,10 @@ public class BM25 {
                 }
             });
             t.start();
-            workers.add(t);
+            workerManager.addWorker(t);
         }
 
-        while (!workers.isEmpty()) {
-            for (Thread t : workers) {
-                if (!t.isAlive()) {
-                    workers.remove(t);
-                    break;
-                }
-            }
-        }
+        while (workerManager.workers_alive()) {}
 
         Document most_relevant_doc = auction.get_highest_bidder();
         return most_relevant_doc.get_name();

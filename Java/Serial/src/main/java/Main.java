@@ -23,6 +23,9 @@ public class Main {
                 document_list.add(new Document(path + file.getName()));
             }
         }
+		else {
+            System.out.println("No documents found");
+        }
 
         System.out.println("Finished reading docs. Now calculating score...");
 

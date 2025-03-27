@@ -14,17 +14,18 @@ filepath :: String = "../data/pdfs/"
 main = do
        files <- getDirectoryContents filepath
        let pdf_files = filter (is_file_type "pdf") (map (filepath ++) files)
-       documents <- wow $ map tokenizeDoc pdf_files
+       pre_documents <- io_comm $ map tokenizeDoc pdf_files
+       let documents = filter (\xs -> if xs == [] then True else False) pre_documents
        let nDocs :: Double = fromIntegral (length documents)
        let avgdl :: Double = get_avgdl nDocs documents
        let score = doc_score (nDocs, avgdl) documents (head documents) query
        print score
 
-wow :: [IO a] -> IO [a]
-wow [] = return []
-wow (x:xs) = do
+io_comm :: [IO a] -> IO [a]
+io_comm [] = return []
+io_comm (x:xs) = do
              x' <- x
-             xs' <- wow xs
+             xs' <- io_comm xs
              return (x': xs')
 
 is_file_type :: String -> String -> Bool

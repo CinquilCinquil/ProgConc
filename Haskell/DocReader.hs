@@ -14,23 +14,29 @@ type PdfText = IO Text
 
 tokenizeDoc :: String -> IO [String]
 tokenizeDoc filename = withPdfFile filename $ \pdf -> do
-    putStrLn $ "Reading " ++ filename ++ "("
+    putStrLn $ "Reading " ++ filename ++ " ("
     -- Dealing with encryption
     encrypted <- isEncrypted pdf
     when encrypted $ do
-      ok <- setUserPassword pdf defaultUserPassword
-      unless ok $
-        fail "need password"
+        ok <- setUserPassword pdf defaultUserPassword
+        unless ok $ fail "need password"
     -- Getting info
     doc <- document pdf
-    catalog <- documentCatalog doc
-    rootNode <- catalogPageNode catalog
-    count <- pageNodeNKids rootNode
-    -- Tokenizing
-    text <- tokenizePages rootNode (count-1)
-    let tokens = map clean_str (tokenizer $ show text)
-    putStrLn $ ");"
-    return tokens
+    result <- try (documentCatalog doc) :: IO (Either SomeException Catalog)
+    case result of 
+        Left ex -> do
+            putStrLn $
+                "    !! Failed cataloging document"
+            putStrLn ");"
+            return []
+        Right catalog -> do
+            rootNode <- catalogPageNode catalog
+            count <- pageNodeNKids rootNode
+            -- Tokenizing
+            text <- tokenizePages rootNode (count-1)
+            let tokens = map clean_str (tokenizer $ show text)
+            putStrLn ");"
+            return tokens
 
 tokenizer :: String -> [String]
 tokenizer "" = []

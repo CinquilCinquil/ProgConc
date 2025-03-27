@@ -59,19 +59,47 @@ public class BM25 {
     public String get_most_relevant_doc(Query query) {
         if (ndocs == 0) return "No document provided";
 
-        Document most_relevant_doc = null;
-        double highest_score = Double.NEGATIVE_INFINITY;
+        class Auction {
+            double highest_bidder_score = Double.NEGATIVE_INFINITY;
+            Document highest_bidder = null;
 
-        for (Document doc : docs) {
-
-            double scr = score(doc, query);
-            if (scr >= highest_score) {
-                most_relevant_doc = doc;
-                highest_score = scr;
+            public synchronized void challenge_highest_bidder(Double bid, Document doc) {
+                if (bid >= highest_bidder_score) {
+                    highest_bidder_score = bid;
+                    highest_bidder = doc;
+                }
             }
 
+            public Document get_highest_bidder() {
+                return highest_bidder;
+            }
         }
 
+        Auction auction = new Auction();
+        ArrayList<Thread> workers = new ArrayList<Thread>();
+
+        for (Document doc : docs) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    double scr = score(doc, query);
+                    auction.challenge_highest_bidder(scr, doc);
+                }
+            });
+            t.start();
+            workers.add(t);
+        }
+
+        while (!workers.isEmpty()) {
+            for (Thread t : workers) {
+                if (!t.isAlive()) {
+                    workers.remove(t);
+                    break;
+                }
+            }
+        }
+
+        Document most_relevant_doc = auction.get_highest_bidder();
         return most_relevant_doc.get_name();
     }
 

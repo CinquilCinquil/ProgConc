@@ -13,7 +13,7 @@ import Utils
 type PdfText = IO Text
 --type PageNode = Pdf.Document.PageNode
 
-tokenizeDoc :: String -> IO [String]
+tokenizeDoc :: String -> IO (String, [String])
 tokenizeDoc filename = withPdfFile filename $ \pdf -> do
     putStrLn $ "Reading " ++ filename ++ " ("
     -- Dealing with encryption
@@ -29,7 +29,7 @@ tokenizeDoc filename = withPdfFile filename $ \pdf -> do
             putStrLn $
                 "    !! Failed cataloging document"
             putStrLn ");"
-            return []
+            return ("", [])
         Right catalog -> do
             rootNode <- catalogPageNode catalog
             count <- pageNodeNKids rootNode
@@ -37,7 +37,7 @@ tokenizeDoc filename = withPdfFile filename $ \pdf -> do
             text <- tokenizePages rootNode (count-1)
             let tokens = map clean_str (tokenizer $ show text)
             putStrLn ");"
-            return tokens
+            return (filename, tokens)
 
 tokenizer :: String -> [String]
 tokenizer "" = []

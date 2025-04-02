@@ -1,5 +1,9 @@
 module Utils where
 
+not_empty :: [a] -> Bool
+not_empty [] = False
+not_empty _ = True
+
 is_file_type :: String -> String -> Bool
 is_file_type [] _ = True
 is_file_type _ [] = False

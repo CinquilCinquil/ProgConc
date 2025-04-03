@@ -90,7 +90,7 @@ public class BM25 {
             workerManager.addWorker(t);
         }
 
-        while (workerManager.workers_alive()) {}
+        workerManager.wait_workers();
 
         Document most_relevant_doc = auction.get_highest_bidder();
         return most_relevant_doc.get_name();

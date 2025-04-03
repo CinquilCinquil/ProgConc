@@ -36,7 +36,7 @@ public class Main {
                 workerManager.addWorker(t);
             }
 
-            while (workerManager.workers_alive()) {}
+            workerManager.wait_workers();
         }
         else {
             System.out.println("No documents found");

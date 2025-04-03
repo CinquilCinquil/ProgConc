@@ -29,4 +29,15 @@ public class WorkerManager {
 
         return false;
     }
+
+    public void wait_workers() {
+        for (Thread thread : workers) {
+            try {
+                thread.join();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

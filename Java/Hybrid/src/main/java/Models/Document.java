@@ -18,6 +18,16 @@ public class Document {
     private final int block_size = 5000;
     private int n_blocks;
 
+    class Counter {
+        private int total = 0;
+        public synchronized void increment() {
+            total++;
+        }
+        public synchronized int get() {
+            return total;
+        }
+    }
+
     public Document(String filepath) {
 
         this.name = filepath;
@@ -59,13 +69,6 @@ public class Document {
             Reads each chunk of the text in a separate thread
          */
 
-        class Counter {
-            int total = 0;
-            public synchronized void increment() {
-                total++;
-            }
-        }
-
         Counter counter = new Counter();
 
         WorkerManager workerManager = new WorkerManager();
@@ -86,25 +89,37 @@ public class Document {
             workerManager.addWorker(t);
         }
 
-        while (workerManager.workers_alive()) {}
+        workerManager.wait_workers();
 
-        return counter.total;
+        return counter.get();
 
     }
 
-    // I failed to parallel this...
     public boolean has_token(String token) {
 
-        StringTokenizer st = new StringTokenizer(my_text, DEFAULT_SEPARATION);
+        Counter counter = new Counter();
 
-        while (st.hasMoreTokens()) {
-            if (st.nextToken().equalsIgnoreCase(token)) {
-                return true;
-            }
+        WorkerManager workerManager = new WorkerManager();
+        ArrayList<StringTokenizer> sts = get_tokenizers();
+
+        for (StringTokenizer st : sts) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (counter.get() == 0 && st.hasMoreTokens()) {
+                        if (st.nextToken().equalsIgnoreCase(token)) {
+                            counter.increment();
+                        }
+                    }
+                }
+            });
+            t.start();
+            workerManager.addWorker(t);
         }
 
-        return false;
+        workerManager.wait_workers();
 
+        return counter.get() > 0;
     }
 
     public String get_name() {

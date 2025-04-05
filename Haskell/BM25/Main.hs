@@ -9,8 +9,8 @@ import Utils
 
 -- Obs: you gotta use ':set -package directory' before loading
 
-query :: [Token] = tokenizer ("query")
-filepath :: String = "../data/subset/"
+query :: [Token] = tokenizer ("something")
+filepath :: String = "../../data/subset/"
 
 main = do
        files <- getDirectoryContents filepath

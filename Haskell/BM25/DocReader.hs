@@ -1,6 +1,7 @@
 module DocReader where
 
 import Control.Monad
+import Control.Concurrent
 import Control.Exception
 import Data.Text (Text, unpack)
 import Pdf.Document
@@ -9,13 +10,13 @@ import Utils
 -- Obs: you gotta use ':set -package text' before loading
 
 ------------ External
-
+type NameAndDoc = (String, [String])
 type PdfText = IO Text
 --type PageNode = Pdf.Document.PageNode
 
-tokenizeDoc :: String -> IO (String, [String])
-tokenizeDoc filename = withPdfFile filename $ \pdf -> do
-    putStrLn $ "Reading " ++ filename ++ " ("
+tokenizeDoc :: (String, MVar NameAndDoc) -> IO ()
+tokenizeDoc (filename, mvar) = withPdfFile filename $ \pdf -> do
+    --putStrLn $ "Reading " ++ filename ++ " ("
     -- Dealing with encryption
     encrypted <- isEncrypted pdf
     when encrypted $ do
@@ -26,18 +27,18 @@ tokenizeDoc filename = withPdfFile filename $ \pdf -> do
     result <- try (documentCatalog doc) :: IO (Either SomeException Catalog)
     case result of 
         Left ex -> do
-            putStrLn $
-                "    !! Failed cataloging document"
-            putStrLn ");"
-            return ("", [])
+            --putStrLn $
+                --"    !! Failed cataloging document"
+            --putStrLn ");"
+            putMVar mvar ("", [])
         Right catalog -> do
             rootNode <- catalogPageNode catalog
             count <- pageNodeNKids rootNode
             -- Tokenizing
             text <- tokenizePages rootNode (count-1)
             let tokens = map clean_str (tokenizer $ show text)
-            putStrLn ");"
-            return (filename, tokens)
+            --putStrLn ");"
+            putMVar mvar (filename, tokens)
 
 tokenizer :: String -> [String]
 tokenizer "" = []
@@ -58,9 +59,9 @@ tokenizePages rootNode count = do
             result <- try (pageExtractText page) :: IO (Either SomeException Text)
             case result of
                 Left ex -> do
-                    putStrLn $
-                        "    !! Failed reading page " ++ (show count)
+                    --putStrLn $
+                    --    "    !! Failed reading page " ++ (show count)
                     return txt1
                 Right val -> do
-                    when ((count `mod` 100) == 0) $ print "Read 100 Pages"
+                    --when ((count `mod` 100) == 0) $ print "Read 100 Pages"
                     return $ txt1 ++ (show val)

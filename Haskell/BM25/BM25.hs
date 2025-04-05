@@ -8,7 +8,7 @@ type Document = [Token]
 get_most_relevant_doc :: (Double, Double) -> [(String, Document)] -> [Document] -> [Token] -> (String, Double)
 get_most_relevant_doc _ [] _ _ = ("", 0)
 get_most_relevant_doc params ((doc_name, document) : xs) docs_contents query =
-    let score = doc_score params docs_contents document query in
+    let score = doc_score params docs_contents document query in  -- parallel this
     let most_relevant_doc_in_xs = get_most_relevant_doc params xs docs_contents query in
     let best_score_in_xs = snd $ most_relevant_doc_in_xs in
     if score >= best_score_in_xs

@@ -12,11 +12,9 @@ import Utils
 ------------ External
 type NameAndDoc = (String, [String])
 type PdfText = IO Text
---type PageNode = Pdf.Document.PageNode
 
-tokenizeDoc :: (String, MVar NameAndDoc) -> IO ()
-tokenizeDoc (filename, mvar) = withPdfFile filename $ \pdf -> do
-    --putStrLn $ "Reading " ++ filename ++ " ("
+tokenizeDoc :: MVar String -> (String, MVar NameAndDoc) -> IO ()
+tokenizeDoc thread_print (filename, mvar) = withPdfFile filename $ \pdf -> do
     -- Dealing with encryption
     encrypted <- isEncrypted pdf
     when encrypted $ do
@@ -27,17 +25,20 @@ tokenizeDoc (filename, mvar) = withPdfFile filename $ \pdf -> do
     result <- try (documentCatalog doc) :: IO (Either SomeException Catalog)
     case result of 
         Left ex -> do
-            --putStrLn $
-                --"    !! Failed cataloging document"
-            --putStrLn ");"
+            -- Finishing thread
+            putMVar thread_print $
+                ("Reading " ++ filename ++ " (\n" ++ "    !! Failed cataloging document\n" ++ ");")
             putMVar mvar ("", [])
+
         Right catalog -> do
             rootNode <- catalogPageNode catalog
             count <- pageNodeNKids rootNode
             -- Tokenizing
-            text <- tokenizePages rootNode (count-1)
+            (text, tokenizePages_print) <- tokenizePages rootNode (count-1)
             let tokens = map clean_str (tokenizer $ show text)
-            --putStrLn ");"
+
+            -- Finishing thread
+            putMVar thread_print ("Reading " ++ filename ++ " (\n" ++ tokenizePages_print ++ ");")
             putMVar mvar (filename, tokens)
 
 tokenizer :: String -> [String]
@@ -51,17 +52,17 @@ tokenizer (x:xs) = conct_to_head x (tokenizer xs)
 clean_str :: String -> String
 clean_str s = remove_str "\\" $ remove_str "\"" $ (remove_sequence_of_str ["\\", "n"] s)
 
-tokenizePages :: PageNode -> Int -> IO String
-tokenizePages _ (-1) = return ""
+tokenizePages :: PageNode -> Int -> IO (String, String)
+tokenizePages _ (-1) = return ("", "")
 tokenizePages rootNode count = do
-            txt1 <- tokenizePages rootNode (count-1)
+            (txt1, my_print) <- tokenizePages rootNode (count-1)
             page <- pageNodePageByNum rootNode count
             result <- try (pageExtractText page) :: IO (Either SomeException Text)
             case result of
                 Left ex -> do
-                    --putStrLn $
-                    --    "    !! Failed reading page " ++ (show count)
-                    return txt1
+                    return (txt1, my_print ++ ("    !! Failed reading page " ++ (show count) ++ "\n"))
                 Right val -> do
-                    --when ((count `mod` 100) == 0) $ print "Read 100 Pages"
-                    return $ txt1 ++ (show val)
+                    return $ (txt1 ++ (show val),
+                        if (count `mod` 100) == 0
+                            then my_print ++ "    Read 100 Pages\n"
+                            else my_print)

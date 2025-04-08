@@ -20,12 +20,12 @@ main = do
        let n_pdf_names = length pdf_names
 
        ---- Processing docs
-       mvar_documents <- create_emtpy_mvars n_pdf_names
+       mvar_documents <- create_emtpy_mvars n_pdf_names :: IO [MVar NameAndDoc]
        thread_print <- newEmptyMVar
 
        let input_list = zip pdf_names mvar_documents
 
-       -- Parsing each document on a separate thread
+       -- Parsing each document on a separate threaMvardoc_contentsd
        threadIds <- mapM (forkIO . tokenizeDoc thread_print) input_list
 
        replicateM_ n_pdf_names (printMVar thread_print)
@@ -34,13 +34,19 @@ main = do
 
        ---- Filtering sucessfully processed docs
        let documents = filter (not_empty . snd) non_mvar_documents :: [NameAndDoc]
-       let docs_contents = map snd documents
+       let doc_contents = map snd documents
        let n_processed_docs = length documents
        putStrLn $ "Processed " ++ (show n_processed_docs) ++ " out of " ++ (show n_pdf_names)
 
        ---- Calculating most relevant doc for a given query
        -- parameters
        let nDocs :: Double = fromIntegral n_processed_docs
-       let avgdl :: Double = get_avgdl nDocs docs_contents
+       let avgdl :: Double = get_avgdl nDocs doc_contents
        -- result
-       putStrLn $ fst $ get_most_relevant_doc (nDocs, avgdl) documents docs_contents query  -- parallel this
+       doc_scores <- create_emtpy_mvars n_processed_docs :: IO [MVar (String, Double)]
+
+       threadIds2 <- mapM (forkOS . multithread_doc_score 
+              (nDocs, avgdl) doc_contents query) (zip doc_scores documents)
+
+       most_relevant_doc <- get_most_relevant_doc doc_scores
+       putStrLn $ fst $ most_relevant_doc

@@ -63,6 +63,6 @@ tokenizePages rootNode count = do
                     return (txt1, my_print ++ ("    !! Failed reading page " ++ (show count) ++ "\n"))
                 Right val -> do
                     return $ (txt1 ++ (show val),
-                        if (count `mod` 100) == 0
+                        if ((count + 1) `mod` 100) == 0
                             then my_print ++ "    Read 100 Pages\n"
                             else my_print)

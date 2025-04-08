@@ -6,12 +6,12 @@ import Control.Concurrent
 
 printMVar var = takeMVar var >>= putStrLn
 
-create_emtpy_mvars :: Int -> IO [MVar (String, [String])]
+create_emtpy_mvars :: Int -> IO [MVar a]
 create_emtpy_mvars 0 = return []
 create_emtpy_mvars n = do
-       new_empty_mvar <- newEmptyMVar :: IO (MVar (String, [String]))
+       new_empty_mvar <- newEmptyMVar
        list <- create_emtpy_mvars (n - 1)
-       let return_list = (new_empty_mvar):(list) :: [MVar (String, [String])]
+       let return_list = (new_empty_mvar):(list)
        return return_list
 
 ---------- FILES

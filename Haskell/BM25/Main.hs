@@ -18,7 +18,7 @@ main = do
        let pdf_names = filter (is_file_type "pdf") (map (filepath ++) files)
        -- processing docs
        mvar_documents <- create_emtpy_vars (length pdf_names)
-       let input_list = tuple_of_list_to_list_of_tuple (pdf_names, mvar_documents)
+       let input_list = zip (pdf_names, mvar_documents)
        threadsIds <- mapM (forkIO . tokenizeDoc) input_list
 
        non_mvar_documents <- mapM takeMVar mvar_documents -- waits until all threads finish
@@ -40,10 +40,3 @@ create_emtpy_vars n = do
        list <- create_emtpy_vars (n - 1)
        let return_list = (new_empty_mvar):(list) :: [MVar NameAndDoc]
        return return_list
-
-tuple_of_list_to_list_of_tuple :: ([a], [b]) -> [(a, b)]
-tuple_of_list_to_list_of_tuple ([], []) = []
-tuple_of_list_to_list_of_tuple (x:xs, y:[]) = [(x, y)]
-tuple_of_list_to_list_of_tuple (x:[], y:ys) = [(x, y)]
-tuple_of_list_to_list_of_tuple (x:xs, y:ys) = 
-       (x, y) : tuple_of_list_to_list_of_tuple (xs, ys)

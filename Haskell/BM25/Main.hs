@@ -45,7 +45,7 @@ main = do
        -- result
        doc_scores <- create_emtpy_mvars n_processed_docs :: IO [MVar (String, Double)]
 
-       threadIds2 <- mapM (forkOS . multithread_doc_score 
+       threadIds' <- mapM (forkOS . multithread_doc_score 
               (nDocs, avgdl) doc_contents query) (zip doc_scores documents)
 
        most_relevant_doc <- get_most_relevant_doc doc_scores

@@ -11,7 +11,6 @@ import Utils
 ------------ External
 
 type PdfText = IO Text
---type PageNode = Pdf.Document.PageNode
 
 tokenizeDoc :: String -> IO (String, [String])
 tokenizeDoc filename = withPdfFile filename $ \pdf -> do
@@ -62,5 +61,5 @@ tokenizePages rootNode count = do
                         "    !! Failed reading page " ++ (show count)
                     return txt1
                 Right val -> do
-                    when ((count `mod` 100) == 0) $ print "Read 100 Pages"
+                    when (((count + 1) `mod` 100) == 0) $ print "Read 100 Pages"
                     return $ txt1 ++ (show val)

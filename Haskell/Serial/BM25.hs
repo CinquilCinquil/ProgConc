@@ -31,7 +31,7 @@ doc_score (nDocs, avgdl) documents doc (x:xs) =
     let freq_in_doc = token_freq x doc in
     let doc_rate = ((fromIntegral $ length doc)/avgdl) in
     (doc_score (nDocs, avgdl) documents doc xs) +
-    ((iDF nDocs documents x) * freq_in_doc)/(freq_in_doc + k*(1 - b*(1 + doc_rate)))
+    ((iDF nDocs documents x) * freq_in_doc)/(freq_in_doc + k*(1 + b*(-1 + doc_rate)))
 
 token_in_doc :: Token -> Document -> Bool
 token_in_doc _ [] = False

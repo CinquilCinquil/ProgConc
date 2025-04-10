@@ -29,7 +29,7 @@ public class BM25 {
             String qi = query.get_qi(i); // i'th Keyword
             double freq_of_qi_in_doc = doc.get_token_frequency(qi); // Frequency of qi in D
 
-            sum += IDF(qi) * freq_of_qi_in_doc / (freq_of_qi_in_doc + k*(1 - b*(1 + doc_rate)));
+            sum += IDF(qi) * freq_of_qi_in_doc / (freq_of_qi_in_doc + k*(1 + b*(-1 + doc_rate)));
 
         }
 

@@ -14,6 +14,13 @@ create_emtpy_mvars n = do
        let return_list = (new_empty_mvar):(list)
        return return_list
 
+mvar_list_to_list :: [MVar a] -> IO ([a])
+mvar_list_to_list [] = return []
+mvar_list_to_list (mvar_x:mvar_xs) = do
+       x <- takeMVar mvar_x
+       xs <- mvar_list_to_list mvar_xs
+       return (x:xs)
+
 ---------- FILES
 
 is_file_type :: String -> String -> Bool

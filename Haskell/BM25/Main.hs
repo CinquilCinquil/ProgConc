@@ -10,8 +10,8 @@ import Utils
 
 -- Obs: you gotta use ':set -package text' and ':set -package directory' before loading
 
-query :: [Token] = tokenizer ("partial")
-filepath :: String = "../../data/subset/"
+query = tokenizer ("partial") :: [Token]
+filepath = "../../data/subset/" :: String
 
 main = do
        ---- Gathering docs
@@ -40,13 +40,14 @@ main = do
 
        ---- Calculating most relevant doc for a given query
        -- parameters
-       let nDocs :: Double = fromIntegral n_processed_docs
-       let avgdl :: Double = get_avgdl nDocs doc_contents
+       let nDocs = fromIntegral n_processed_docs :: Double
+       let avgdl = get_avgdl nDocs doc_contents :: Double
        -- result
        doc_scores <- create_emtpy_mvars n_processed_docs :: IO [MVar (String, Double)]
 
-       threadIds' <- mapM (forkOS . multithread_doc_score 
+       threadIds' <- mapM (forkOS . multithread_doc_score
               (nDocs, avgdl) doc_contents query) (zip doc_scores documents)
 
-       most_relevant_doc <- get_most_relevant_doc doc_scores
-       putStrLn $ fst $ most_relevant_doc
+       -- waits until all threads finish
+       docname_score_list <- mvar_list_to_list doc_scores
+       putStrLn $ fst $ (get_most_relevant_doc ("no doc", 0) docname_score_list)

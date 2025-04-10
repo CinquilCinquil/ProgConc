@@ -1,0 +1,6 @@
+The only parts of 'main' i think would benefit from concurrency are document reading and document ranking
+(this notion was also achieved observing how much time each step took on execution)
+
+'tokenizeDoc' should not be made concurrent since the only part that i could alter is 'tokenizer'
+and to do that i would need to split the input string and then make each thread only process their parts.
+I figured this effort wouldn't lead to any significant gains in computation, since 'tokenizer' isnt that slow anyway.

@@ -12,8 +12,9 @@ import static java.lang.Math.max;
 
 public class DocumentData {
 
-    private String my_text, name;
+    private String name;
     private int n_tokens;
+    private ArrayList<Integer> token_freq;
     private final String DEFAULT_SEPARATION = " ";
     private final int block_size = 5000;
     private int n_blocks;
@@ -28,42 +29,36 @@ public class DocumentData {
         }
     }
 
-    public DocumentData(String filepath) {
+    public DocumentData(String filepath, Query query) throws IOException {
 
         this.name = filepath;
 
-        try (PDDocument document = PDDocument.load(new File(filepath))) {
-            PDFTextStripper pdfStripper = new PDFTextStripper();
-            this.my_text = pdfStripper.getText(document);
+        PDDocument document = PDDocument.load(new File(filepath));
+        var my_text = (new PDFTextStripper()).getText(document);
+        StringTokenizer tokenizer = new StringTokenizer(my_text, DEFAULT_SEPARATION);
 
-            this.n_tokens = (new StringTokenizer(this.my_text, DEFAULT_SEPARATION)).countTokens();
+        this.n_tokens = tokenizer.countTokens();
 
-            this.n_blocks = max(n_tokens / block_size, 1);
+        this.n_blocks = max(n_tokens/block_size, 1);
 
-            System.out.println("Successfully read the file " + filepath);
-
-        } catch (IOException e) {
-            System.out.println("KILL: " + filepath);
-            e.printStackTrace();
+        this.token_freq = new ArrayList<>();
+        for (String token : query.get_tokens()) {
+            this.token_freq.add(get_token_frequency(token, get_tokenizers(my_text)));
         }
 
     }
 
-    private ArrayList<StringTokenizer> get_tokenizers() {
+    private ArrayList<StringTokenizer> get_tokenizers(String text) {
         ArrayList<StringTokenizer> tokenizers = new ArrayList<StringTokenizer>();
         for (int i = 0; i < n_blocks; i++) {
-            int block_end = i < n_blocks - 1 ? block_size * (i + 1) : my_text.length();
-            String my_text_block = my_text.substring(block_size * i, block_end);
+            int block_end = i < n_blocks - 1 ? block_size * (i + 1) : text.length();
+            String my_text_block = text.substring(block_size * i, block_end);
             tokenizers.add(new StringTokenizer(my_text_block, DEFAULT_SEPARATION));
         }
         return tokenizers;
     }
 
-    public int get_n_tokens() {
-       return n_tokens;
-    }
-
-    public int get_token_frequency(String token) {
+    public int get_token_frequency(String token, ArrayList<StringTokenizer> sts) {
 
         /*
             Reads each chunk of the text in a separate thread
@@ -72,7 +67,6 @@ public class DocumentData {
         Counter counter = new Counter();
 
         WorkerManager workerManager = new WorkerManager();
-        ArrayList<StringTokenizer> sts = get_tokenizers();
 
         for (StringTokenizer st : sts) {
             Thread t = new Thread(new Runnable() {
@@ -95,31 +89,16 @@ public class DocumentData {
 
     }
 
-    public boolean has_token(String token) {
+    public int get_token_frequency(int i) {
+        return token_freq.get(i);
+    }
 
-        Counter counter = new Counter();
+    public boolean has_token(int i) {
+        return get_token_frequency(i) > 0;
+    }
 
-        WorkerManager workerManager = new WorkerManager();
-        ArrayList<StringTokenizer> sts = get_tokenizers();
-
-        for (StringTokenizer st : sts) {
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (counter.get() == 0 && st.hasMoreTokens()) {
-                        if (st.nextToken().equalsIgnoreCase(token)) {
-                            counter.increment();
-                        }
-                    }
-                }
-            });
-            t.start();
-            workerManager.addWorker(t);
-        }
-
-        workerManager.wait_workers();
-
-        return counter.get() > 0;
+    public int get_n_tokens() {
+        return n_tokens;
     }
 
     public String get_name() {

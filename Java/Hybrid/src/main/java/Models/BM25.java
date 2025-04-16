@@ -6,71 +6,73 @@ public class BM25 {
 
     public double k = 1.5, b = 0.75;
     private int ndocs;
-    private int avgdl; // Average document length
-    private ArrayList<Document> docs;
+    private double avgdl; // Average document length
+    private Query query;
+    private ArrayList<DocumentData> docs;
+    private ArrayList<Integer> amount_of_documents_with_token;
 
-    public BM25(ArrayList<Document> docs) {
-        int sum = 0;
-        for (Document doc : docs) {
-            sum += doc.get_n_tokens();
+    public BM25(Query query) {
+        this.query = query;
+        this.amount_of_documents_with_token = new ArrayList<>();
+        this.docs = new ArrayList<>();
+
+        for (int i = 0; i < query.get_length(); i++) {
+            amount_of_documents_with_token.add(0);
         }
-        this.avgdl = !docs.isEmpty() ? sum/docs.size() : 1;
-        this.ndocs = docs.size();
-        this.docs = docs;
     }
 
-    public double score(Document doc, Query query) {
+    public double score(DocumentData doc, Query query) {
 
         double sum = 0;
         double doc_rate = (double) doc.get_n_tokens() / this.avgdl;
 
         for (int i = 0;i < query.get_length();i ++) {
-            
-            String qi = query.get_qi(i); // i'th Keyword
-            double freq_of_qi_in_doc = doc.get_token_frequency(qi); // Frequency of qi in D
-
-            sum += IDF(qi) * freq_of_qi_in_doc / (freq_of_qi_in_doc + k*(1 + b*(-1 + doc_rate)));
-
+            double freq = doc.get_token_frequency(i);
+            sum += IDF(i) * freq / (freq + k*(1 + b*(-1 + doc_rate)));
         }
 
         return sum;
-
     }
 
-    public int get_amount_of_documents_with(String str) {
-        int total = 0;
-        for (Document doc : docs) {
-            if (doc.has_token(str)) {
-                total++;
+    public void add(DocumentData doc) {
+        this.docs.add(doc);
+        this.avgdl += doc.get_n_tokens();
+        update_IDF(doc);
+    }
+
+    public void update_IDF(DocumentData doc) {
+        for (int i = 0;i < query.get_length();i ++) {
+            if (doc.has_token(i)) {
+                amount_of_documents_with_token.set(i,
+                        amount_of_documents_with_token.get(i) + 1);
             }
         }
-
-        return total;
     }
 
-    public double IDF(String qi) {
+    public double IDF(int i) {
 
         int N = this.ndocs;
-        int nqi = get_amount_of_documents_with(qi);
+        int nqi = amount_of_documents_with_token.get(i);
 
         return Math.log(1 + (N - nqi +  0.5)/(nqi + 0.5));
     }
 
     public String get_most_relevant_doc(Query query) {
-        if (ndocs == 0) return "No document provided";
+
+        this.avgdl *= 1.0 / docs.size();
 
         class Auction {
             double highest_bidder_score = Double.NEGATIVE_INFINITY;
-            Document highest_bidder = null;
+            DocumentData highest_bidder = null;
 
-            public synchronized void challenge_highest_bidder(Double bid, Document doc) {
+            public synchronized void challenge_highest_bidder(Double bid, DocumentData doc) {
                 if (bid >= highest_bidder_score) {
                     highest_bidder_score = bid;
                     highest_bidder = doc;
                 }
             }
 
-            public Document get_highest_bidder() {
+            public DocumentData get_highest_bidder() {
                 return highest_bidder;
             }
         }
@@ -78,7 +80,7 @@ public class BM25 {
         Auction auction = new Auction();
         WorkerManager workerManager = new WorkerManager();
 
-        for (Document doc : docs) {
+        for (DocumentData doc : docs) {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -92,8 +94,12 @@ public class BM25 {
 
         workerManager.wait_workers();
 
-        Document most_relevant_doc = auction.get_highest_bidder();
-        return most_relevant_doc.get_name();
+        DocumentData most_relevant_doc = auction.get_highest_bidder();
+        return most_relevant_doc == null ? "" : most_relevant_doc.get_name();
+    }
+
+    public int size() {
+        return docs.size();
     }
 
 }

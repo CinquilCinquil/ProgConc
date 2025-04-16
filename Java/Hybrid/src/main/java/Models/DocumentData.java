@@ -19,16 +19,6 @@ public class DocumentData {
     private final int block_size = 5000;
     private int n_blocks;
 
-    class Counter {
-        private int total = 0;
-        public synchronized void increment() {
-            total++;
-        }
-        public synchronized int get() {
-            return total;
-        }
-    }
-
     public DocumentData(String filepath, Query query) throws IOException {
 
         this.name = filepath;
@@ -63,6 +53,16 @@ public class DocumentData {
         /*
             Reads each chunk of the text in a separate thread
          */
+
+        class Counter {
+            private int total = 0;
+            public synchronized void increment() {
+                total++;
+            }
+            public synchronized int get() {
+                return total;
+            }
+        }
 
         Counter counter = new Counter();
 

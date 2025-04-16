@@ -1,5 +1,5 @@
 import Models.BM25;
-import Models.Document;
+import Models.DocumentData;
 import Models.Query;
 
 import java.io.File;
@@ -13,27 +13,24 @@ public class Main {
 
     static public void main(String args[]) {
 
-        ArrayList<Document> document_list = new ArrayList<Document>();
         String path = "../../data/subset/";
-        File directory = new File(path);
-        File[] files = directory.listFiles();
+        File[] files = (new File(path)).listFiles();
 
         if (files != null) {
+
+            Query query = new Query("something");
+            BM25 bm25 = new BM25(query);
+
             for (File file : files) {
-                document_list.add(new Document(path + file.getName()));
+                DocumentData doc = new DocumentData(path + file.getName(), query);
+                bm25.add(doc);
             }
+
+            System.out.println("Most relevant doc: " + bm25.get_most_relevant_doc());
         }
 		else {
             System.out.println("No documents found");
         }
-
-        System.out.println("Finished reading docs. Now calculating score...");
-
-        BM25 bm25 = new BM25(document_list);
-        String most_relevant_doc_name = bm25.get_most_relevant_doc(new Query("something"));
-
-        System.out.println("Most relevant doc: " + most_relevant_doc_name);
-
     }
 
 }

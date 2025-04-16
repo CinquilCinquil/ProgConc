@@ -5,64 +5,63 @@ import java.util.ArrayList;
 public class BM25 {
 
     public double k = 1.5, b = 0.75;
-    private int ndocs;
-    private int avgdl; // Average document length
-    private ArrayList<Document> docs;
+    private double avgdl; // Average document length
+    private Query query;
+    private ArrayList<DocumentData> docs;
+    private ArrayList<Integer> amount_of_documents_with_token;
 
-    public BM25(ArrayList<Document> docs) {
-        int sum = 0;
-        for (Document doc : docs) {
-            sum += doc.get_n_tokens();
-        }
-        this.avgdl = !docs.isEmpty() ? sum/docs.size() : 1;
-        this.ndocs = docs.size();
-        this.docs = docs;
+    public BM25(Query query) {
+        this.query = query;
+        this.amount_of_documents_with_token = new ArrayList<>();
+        this.docs = new ArrayList<>();
     }
 
-    public double score(Document doc, Query query) {
+    public double score(DocumentData doc, Query query) {
 
         double sum = 0;
         double doc_rate = (double) doc.get_n_tokens() / this.avgdl;
 
         for (int i = 0;i < query.get_length();i ++) {
-            
-            String qi = query.get_qi(i); // i'th Keyword
-            double freq_of_qi_in_doc = doc.get_token_frequency(qi); // Frequency of qi in D
-
-            sum += IDF(qi) * freq_of_qi_in_doc / (freq_of_qi_in_doc + k*(1 + b*(-1 + doc_rate)));
-
+            double freq = doc.get_token_frequency(i);
+            sum += IDF(i) * freq / (freq + k*(1 + b*(-1 + doc_rate)));
         }
 
         return sum;
 
     }
 
-    public int get_amount_of_documents_with(String str) {
-        int total = 0;
-        for (Document doc : docs) {
-            if (doc.has_token(str)) {
-                total++;
-            }
-        }
-
-        return total;
+    public void add(DocumentData doc) {
+        this.docs.add(doc);
+        this.avgdl += doc.get_n_tokens();
+        update_IDF(doc);
     }
 
-    public double IDF(String qi) {
+    public void update_IDF(DocumentData doc) {
+        for (int i = 0;i < query.get_length();i ++) {
+            String token = query.get_qi(i);
+            if (doc.has_token(token)) {
+                amount_of_documents_with_token.set(i,
+                        amount_of_documents_with_token.get(i) + 1);
+            }
+        }
+    }
 
-        int N = this.ndocs;
-        int nqi = get_amount_of_documents_with(qi);
+    public double IDF(int i) {
+
+        int N = docs.size();
+        int nqi = amount_of_documents_with_token.get(i);
 
         return Math.log(1 + (N - nqi +  0.5)/(nqi + 0.5));
     }
 
-    public String get_most_relevant_doc(Query query) {
-        if (ndocs == 0) return "No document provided";
+    public String get_most_relevant_doc() {
 
-        Document most_relevant_doc = null;
+        this.avgdl *= 1.0 / docs.size();
+
+        DocumentData most_relevant_doc = null;
         double highest_score = Double.NEGATIVE_INFINITY;
 
-        for (Document doc : docs) {
+        for (DocumentData doc : docs) {
 
             double scr = score(doc, query);
             if (scr >= highest_score) {

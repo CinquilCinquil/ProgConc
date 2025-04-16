@@ -5,28 +5,36 @@ import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument; 
 import org.apache.pdfbox.text.PDFTextStripper;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Document {
+public class DocumentData {
 
-    private String my_text, name;
+    private String name;
     private int n_tokens;
+    private ArrayList<Integer> token_freq;
     private final String DEFAULT_SEPARATION = " ";
 
-    public Document(String filepath) {
+    // TODO: finish converting this part of the code
+
+    public DocumentData(String filepath, Query query) {
 
         this.name = filepath;
 
         try (PDDocument document = PDDocument.load(new File(filepath))) {
             PDFTextStripper pdfStripper = new PDFTextStripper();
-            this.my_text = pdfStripper.getText(document);
+            var my_text = pdfStripper.getText(document);
 
             this.n_tokens = get_tokenizer().countTokens();
+            this.token_freq = new ArrayList<Integer>();
+            for (String token : query.get_tokens()) {
+                this.token_freq.add(get_token_frequency(token));
+            }
 
             System.out.println("Successfully read the file " + filepath);
 
         } catch (IOException e) {
-            System.out.println("KILL: " + filepath);
+            System.out.println("COULD NOT OPEN: " + filepath);
             e.printStackTrace();
         }
 
@@ -40,7 +48,7 @@ public class Document {
        return n_tokens;
     }
 
-    public int get_token_frequency(String token) {
+    private int get_token_frequency(String token) {
 
         int total = 0;
         StringTokenizer st = get_tokenizer();
@@ -53,6 +61,10 @@ public class Document {
 
         return total;
 
+    }
+
+    public int get_token_frequency(int i) {
+        return token_freq.get(i);
     }
 
     public boolean has_token(String token) {

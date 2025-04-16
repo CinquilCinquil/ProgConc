@@ -15,43 +15,25 @@ public class DocumentData {
     private ArrayList<Integer> token_freq;
     private final String DEFAULT_SEPARATION = " ";
 
-    // TODO: finish converting this part of the code
-
-    public DocumentData(String filepath, Query query) {
+    public DocumentData(String filepath, Query query) throws IOException {
 
         this.name = filepath;
 
-        try (PDDocument document = PDDocument.load(new File(filepath))) {
-            PDFTextStripper pdfStripper = new PDFTextStripper();
-            var my_text = pdfStripper.getText(document);
+        PDDocument document = PDDocument.load(new File(filepath));
+        var my_text = (new PDFTextStripper()).getText(document);
+        StringTokenizer tokenizer = new StringTokenizer(my_text, DEFAULT_SEPARATION);
 
-            this.n_tokens = get_tokenizer().countTokens();
-            this.token_freq = new ArrayList<Integer>();
-            for (String token : query.get_tokens()) {
-                this.token_freq.add(get_token_frequency(token));
-            }
-
-            System.out.println("Successfully read the file " + filepath);
-
-        } catch (IOException e) {
-            System.out.println("COULD NOT OPEN: " + filepath);
-            e.printStackTrace();
+        this.n_tokens = tokenizer.countTokens();
+        this.token_freq = new ArrayList<>();
+        for (String token : query.get_tokens()) {
+            this.token_freq.add(get_token_frequency(token, tokenizer));
         }
 
     }
 
-    private StringTokenizer get_tokenizer() {
-        return new StringTokenizer(my_text, DEFAULT_SEPARATION);
-    }
-
-    public int get_n_tokens() {
-       return n_tokens;
-    }
-
-    private int get_token_frequency(String token) {
+    private int get_token_frequency(String token, StringTokenizer st) {
 
         int total = 0;
-        StringTokenizer st = get_tokenizer();
 
         while (st.hasMoreTokens()) {
             if (st.nextToken().equalsIgnoreCase(token)) {
@@ -67,18 +49,12 @@ public class DocumentData {
         return token_freq.get(i);
     }
 
-    public boolean has_token(String token) {
+    public boolean has_token(int i) {
+        return get_token_frequency(i) > 0;
+    }
 
-        StringTokenizer st = get_tokenizer();
-
-        while (st.hasMoreTokens()) {
-            if (st.nextToken().equalsIgnoreCase(token)) {
-                return true;
-            }
-        }
-
-        return false;
-
+    public int get_n_tokens() {
+        return n_tokens;
     }
 
     public String get_name() {

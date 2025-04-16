@@ -14,6 +14,10 @@ public class BM25 {
         this.query = query;
         this.amount_of_documents_with_token = new ArrayList<>();
         this.docs = new ArrayList<>();
+
+        for (int i = 0; i < query.get_length(); i++) {
+            amount_of_documents_with_token.add(0);
+        }
     }
 
     public double score(DocumentData doc, Query query) {
@@ -27,7 +31,6 @@ public class BM25 {
         }
 
         return sum;
-
     }
 
     public void add(DocumentData doc) {
@@ -38,8 +41,7 @@ public class BM25 {
 
     public void update_IDF(DocumentData doc) {
         for (int i = 0;i < query.get_length();i ++) {
-            String token = query.get_qi(i);
-            if (doc.has_token(token)) {
+            if (doc.has_token(i)) {
                 amount_of_documents_with_token.set(i,
                         amount_of_documents_with_token.get(i) + 1);
             }
@@ -55,7 +57,6 @@ public class BM25 {
     }
 
     public String get_most_relevant_doc() {
-
         this.avgdl *= 1.0 / docs.size();
 
         DocumentData most_relevant_doc = null;
@@ -71,7 +72,10 @@ public class BM25 {
 
         }
 
-        return most_relevant_doc.get_name();
+        return most_relevant_doc == null ? "" : most_relevant_doc.get_name();
     }
 
+    public int size() {
+        return docs.size();
+    }
 }

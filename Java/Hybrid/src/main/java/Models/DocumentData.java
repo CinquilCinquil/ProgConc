@@ -25,6 +25,7 @@ public class DocumentData {
 
         PDDocument document = PDDocument.load(new File(filepath));
         var my_text = (new PDFTextStripper()).getText(document);
+        document.close();
         StringTokenizer tokenizer = new StringTokenizer(my_text, DEFAULT_SEPARATION);
 
         this.n_tokens = tokenizer.countTokens();

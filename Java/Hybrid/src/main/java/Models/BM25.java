@@ -57,7 +57,7 @@ public class BM25 {
         return Math.log(1 + (N - nqi +  0.5)/(nqi + 0.5));
     }
 
-    public String get_most_relevant_doc(Query query) {
+    public String get_most_relevant_doc() {
 
         this.avgdl *= 1.0 / docs.size();
 

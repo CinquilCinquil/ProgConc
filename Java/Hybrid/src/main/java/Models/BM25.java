@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class BM25 {
 
     public double k = 1.5, b = 0.75;
-    private int ndocs;
     private double avgdl; // Average document length
     private Query query;
     private ArrayList<DocumentData> docs;
@@ -51,7 +50,7 @@ public class BM25 {
 
     public double IDF(int i) {
 
-        int N = this.ndocs;
+        int N = docs.size();
         int nqi = amount_of_documents_with_token.get(i);
 
         return Math.log(1 + (N - nqi +  0.5)/(nqi + 0.5));

@@ -19,7 +19,7 @@ public class Main {
 
         if (files != null) {
 
-            Query query = new Query("partial");
+            Query query = new Query("partial function");
             BM25 bm25 = new BM25(query);
 
             WorkerManager workerManager = new WorkerManager();

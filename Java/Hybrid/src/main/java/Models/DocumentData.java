@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 import static java.lang.Math.max;
 
-public class Document {
+public class DocumentData {
 
     private String my_text, name;
     private int n_tokens;
@@ -28,7 +28,7 @@ public class Document {
         }
     }
 
-    public Document(String filepath) {
+    public DocumentData(String filepath) {
 
         this.name = filepath;
 

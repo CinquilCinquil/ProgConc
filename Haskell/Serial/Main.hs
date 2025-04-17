@@ -9,8 +9,8 @@ import Utils
 
 -- Obs: you gotta use ':set -package text' and ':set -package directory' before loading
 
-query :: [Token] = tokenizer ("partial")
-filepath :: String = "../../data/subset/"
+query = tokenizer "partial" :: [Token]
+filepath = "../../data/subset/" :: String
 
 main = do
        ---- Gathering docs
@@ -18,19 +18,14 @@ main = do
        let pdf_names = filter (is_file_type "pdf") (map (filepath ++) files)
 
        ---- Processing docs
-       not_io_documents <- mapM tokenizeDoc pdf_names
+       doc_data_list <- mapM (get_doc_data query . tokenizeDoc) pdf_names :: IO [DocumentData]
 
-       ---- Filtering sucessfully processed docs
-       let documents = filter (not_empty . snd) not_io_documents :: [(String, [String])]
-       let doc_contents = map snd documents
-       let n_total_docs = length pdf_names
-       let n_processed_docs = length documents
-       putStrLn $ "Processed " ++ (show n_processed_docs) ++ " out of " ++ (show n_total_docs)
+       let n_processed_docs = length doc_data_list
 
-       ---- Calculating most relevant doc for a given query
-       -- parameters
-       let nDocs :: Double = fromIntegral n_processed_docs
-       let avgdl :: Double = get_avgdl nDocs doc_contents
-       -- result
-       putStrLn $ fst $ get_most_relevant_doc (nDocs, avgdl) documents doc_contents query
+       putStrLn $ "Processed " ++ (show n_processed_docs) ++ " out of " ++ (show $ length pdf_names)
 
+       let nDocs = fromIntegral n_processed_docs :: Double
+       let avgdl = get_avgdl nDocs (map n_tokens doc_data_list) :: Double
+       let idfs = iDF nDocs doc_data_list query
+
+       putStrLn $ fst $ get_most_relevant_doc (nDocs, avgdl, idfs) doc_data_list query

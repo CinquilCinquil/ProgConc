@@ -10,7 +10,7 @@ import Utils
 
 -- Obs: you gotta use ':set -package text' and ':set -package directory' before loading
 
-query = tokenizer ("partial") :: [Token]
+query = tokenizer "partial" :: [Token]
 filepath = "../../data/subset/" :: String
 
 main = do
@@ -20,34 +20,30 @@ main = do
        let n_pdf_names = length pdf_names
 
        ---- Processing docs
-       mvar_documents <- create_emtpy_mvars n_pdf_names :: IO [MVar NameAndDoc]
+       mvar_doc_data <- create_emtpy_mvars n_pdf_names :: IO [MVar DocumentData]
        thread_print <- newEmptyMVar
 
-       let input_list = zip pdf_names mvar_documents
-
-       -- Parsing each document on a separate threaMvardoc_contentsd
-       threadIds <- mapM (forkOS . tokenizeDoc thread_print) input_list
+       let f = (forkOS . wrapper (get_doc_data query) (tokenizeDoc thread_print))
+       threadIds <- mapM f (zip mvar_doc_data pdf_names)
 
        replicateM_ n_pdf_names (printMVar thread_print)
        -- waits until all threads finish
-       non_mvar_documents <- mapM takeMVar mvar_documents
+       doc_data_list <- mapM takeMVar mvar_doc_data :: IO [DocumentData]
 
-       ---- Filtering sucessfully processed docs
-       let documents = filter (not_empty . snd) non_mvar_documents :: [NameAndDoc]
-       let doc_contents = map snd documents
+       -- Filtering sucessfully processed docs
+       let documents = filter (not_empty . name) doc_data_list :: [DocumentData]
        let n_processed_docs = length documents
-       putStrLn $ "Processed " ++ (show n_processed_docs) ++ " out of " ++ (show n_pdf_names)
 
-       ---- Calculating most relevant doc for a given query
-       -- parameters
+       putStrLn $ "Processed " ++ (show n_processed_docs) ++ " out of " ++ (show $ n_pdf_names)
+
+       ---- Calculating Score
        let nDocs = fromIntegral n_processed_docs :: Double
-       let avgdl = get_avgdl nDocs doc_contents :: Double
-       -- result
-       doc_scores <- create_emtpy_mvars n_processed_docs :: IO [MVar (String, Double)]
+       let avgdl = get_avgdl nDocs (map n_tokens documents) :: Double
+       let idfs = iDF nDocs documents query
 
+       doc_score_mvars <- create_emtpy_mvars n_processed_docs :: IO [MVar (String, Double)]
        threadIds' <- mapM (forkOS . multithread_doc_score
-              (nDocs, avgdl) doc_contents query) (zip doc_scores documents)
+              (nDocs, avgdl, idfs) query) (zip doc_score_mvars documents)
 
-       -- waits until all threads finish
-       docname_score_list <- mvar_list_to_list doc_scores
-       putStrLn $ fst $ (get_most_relevant_doc ("no doc", 0) docname_score_list)
+       doc_score_list <- mvar_list_to_list doc_score_mvars
+       putStrLn $ fst $ (get_most_relevant_doc doc_score_list)

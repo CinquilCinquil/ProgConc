@@ -19,8 +19,9 @@ main = do
 
        ---- Processing docs
        doc_data_list <- mapM (get_doc_data query . tokenizeDoc) pdf_names :: IO [DocumentData]
-
-       let n_processed_docs = length doc_data_list
+	   
+	   let documents = filter (not_empty . name) doc_data_list :: [DocumentData]
+       let n_processed_docs = length documents
 
        putStrLn $ "Processed " ++ (show n_processed_docs) ++ " out of " ++ (show $ length pdf_names)
 

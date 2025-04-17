@@ -2,12 +2,13 @@ module DocReader where
 
 import Control.Monad
 import Control.Concurrent
+import Control.DeepSeq
 import Control.Exception
 import Data.Text (Text, unpack)
 import Pdf.Document
 import Utils
 
--- Obs: you gotta use ':set -package text' before loading
+-- Obs: you gotta use ':set -package text' and ':set -package deepseq' before loading
 
 ------------ External
 data DocumentData = DocumentData {
@@ -45,12 +46,6 @@ tokenizeDoc thread_print filename = withPdfFile filename $ \pdf -> do
             putMVar thread_print ("Reading " ++ filename ++ " (\n" ++ tokenizePages_print ++ ");")
             return (filename, tokens)
 
-tokenizer :: String -> [String]
-tokenizer "" = []
-tokenizer (' ':[]) = []
-tokenizer (' ':xs) = if ((head xs) == ' ') then tokenizer xs else []:(tokenizer xs)
-tokenizer (x:xs) = conct_to_head x (tokenizer xs)
-
 get_token_freq :: String -> DocumentData -> Int
 get_token_freq token doc = do
         let (tkf:tkfs) = token_freq doc
@@ -62,8 +57,10 @@ get_doc_data tokens mvar io_data = do
     data_ <- io_data
     let content = snd data_
     let token_freq_ = zip tokens (map (token_frequency content) tokens)
-    putMVar mvar (DocumentData {
-        name = (fst data_), n_tokens = (length content), token_freq = token_freq_})
+    let len = length content
+
+    (len, token_freq_) `deepseq` (putMVar mvar (DocumentData {
+        name = (fst data_), n_tokens = len, token_freq = token_freq_}))
 
 amount_of_documents_with :: String -> [DocumentData] -> Double
 amount_of_documents_with _ [] = 0
@@ -73,9 +70,6 @@ amount_of_documents_with token (doc:docs) = (amount_of_documents_with token docs
 ------------ Internal
 
 type PdfText = IO Text
-
-clean_str :: String -> String
-clean_str s = remove_str "\\" $ remove_str "\"" $ (remove_sequence_of_str ["\\", "n"] s)
 
 tokenizePages :: PageNode -> Int -> IO (String, String)
 tokenizePages _ (-1) = return ("", "")
@@ -91,7 +85,3 @@ tokenizePages rootNode count = do
                         if ((count + 1) `mod` 100) == 0
                             then my_print ++ "    Read 100 Pages\n"
                             else my_print)
-
-token_frequency :: [String] -> String -> Int
-token_frequency [] _ = 0
-token_frequency (tk:doc) token = (token_frequency doc token) + (if tk == token then 1 else 0)

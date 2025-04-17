@@ -25,6 +25,7 @@ get_avgdl nDocs (freq:freqs) = (get_avgdl nDocs freqs) + (fromIntegral freq) / n
 
 -- Inverse document frequency
 iDF :: Double -> [DocumentData] -> [Token] -> [Double]
+iDF _ _ [] = []
 iDF nDocs documents (token:tokens) = do
     let n = (amount_of_documents_with token documents)
     let idf = log (1 + (0.5 + nDocs - n)/(n + 0.5))

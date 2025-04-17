@@ -1,5 +1,8 @@
 module BM25 where
 
+import Control.Concurrent
+import Control.Monad
+import Control.DeepSeq
 import DocReader (DocumentData, name, n_tokens, amount_of_documents_with, get_token_freq)
 
 ------------ External
@@ -7,16 +10,17 @@ import DocReader (DocumentData, name, n_tokens, amount_of_documents_with, get_to
 type Token = String
 type DocumentText = [Token]
 
-get_most_relevant_doc :: (Double, Double, [Double]) -> [DocumentData] -> [Token] -> (String, Double)
-get_most_relevant_doc _ [] _ = ("", 0)
-get_most_relevant_doc params (doc_data : xs) query = do
-    let score = doc_score params doc_data query
-    let doc_name = name doc_data
-    let best_doc = get_most_relevant_doc params xs query
-    if score > (snd best_doc)
-        then (doc_name, score)
-        else best_doc
+get_most_relevant_doc ::  [(String, Double)] -> (String, Double)
+get_most_relevant_doc [] = ("", 0)
+get_most_relevant_doc ((name, score) : xs) = do
+    best_doc = get_most_relevant_doc xs
+    if score >= (snd best_doc) then (name, score) else best_doc
 
+multithread_doc_score :: (Double, Double, [Double]) -> [Token] ->
+                              (MVar (String, Double), DocumentData) -> IO ()
+multithread_doc_score args query (result_MVar, doc) = do
+    let score = doc_score args doc query
+    score `deepseq` (putMVar result_MVar (name doc, score))
 
 -- Get average document length
 get_avgdl :: Double -> [Int] -> Double
@@ -25,6 +29,7 @@ get_avgdl nDocs (freq:freqs) = (get_avgdl nDocs freqs) + (fromIntegral freq) / n
 
 -- Inverse document frequency
 iDF :: Double -> [DocumentData] -> [Token] -> [Double]
+iDF _ _ [] = []
 iDF nDocs documents (token:tokens) = do
     let n = (amount_of_documents_with token documents)
     let idf = log (1 + (0.5 + nDocs - n)/(n + 0.5))

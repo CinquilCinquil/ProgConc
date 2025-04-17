@@ -24,6 +24,8 @@ main = do
 
        putStrLn $ "Processed " ++ (show n_processed_docs) ++ " out of " ++ (show $ length pdf_names)
 
+       ---- Calculating Score
+
        let nDocs = fromIntegral n_processed_docs :: Double
        let avgdl = get_avgdl nDocs (map n_tokens doc_data_list) :: Double
        let idfs = iDF nDocs doc_data_list query

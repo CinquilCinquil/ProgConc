@@ -4,6 +4,11 @@ import Control.Concurrent
 
 ---------- MVARS
 
+wrapper :: (a -> IO b -> IO ()) -> (c -> IO b) -> (a, c) -> IO ()
+wrapper f g (p, q) = do
+       f p (g q)
+       return ()
+
 printMVar var = takeMVar var >>= putStrLn
 
 create_emtpy_mvars :: Int -> IO [MVar a]

@@ -7,29 +7,33 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.concurrent.CountDownLatch;
 
+import static Models.Utils.create_batch;
 import static java.lang.Math.max;
 
 public class DocumentData {
 
-    private String name;
-    private int n_tokens;
-    private ArrayList<Integer> token_freq;
-    private final String DEFAULT_SEPARATION = " ";
+    private final static int n_threads = 40;
     private final int block_size = 5000;
-    private int n_blocks;
+    private final String DEFAULT_SEPARATION = " ";
+
+    private final String name;
+    private final int n_tokens;
+    private final ArrayList<Integer> token_freq;
+    private final int n_blocks;
 
     public DocumentData(String filepath, Query query) throws IOException {
 
-        this.name = filepath;
-
+        // Extracting text from document
         PDDocument document = PDDocument.load(new File(filepath));
         var my_text = (new PDFTextStripper()).getText(document);
         document.close();
+
         StringTokenizer tokenizer = new StringTokenizer(my_text, DEFAULT_SEPARATION);
 
+        this.name = filepath;
         this.n_tokens = tokenizer.countTokens();
-
         this.n_blocks = max(n_tokens/block_size, 1);
 
         this.token_freq = new ArrayList<>();
@@ -39,6 +43,9 @@ public class DocumentData {
 
     }
 
+    /*
+        Splits 'text' in chunks (of size 'block_size') and creates a StringTokenizer for each
+     */
     private ArrayList<StringTokenizer> get_tokenizers(String text) {
         ArrayList<StringTokenizer> tokenizers = new ArrayList<StringTokenizer>();
         for (int i = 0; i < n_blocks; i++) {
@@ -55,39 +62,23 @@ public class DocumentData {
             Reads each chunk of the text in a separate thread
          */
 
-        class Counter {
-            private int total = 0;
-            public synchronized void increment() {
-                total++;
-            }
-            public synchronized int get() {
-                return total;
-            }
+        final int actual_n_threads = Math.min(n_threads, sts.size());
+        final CountDownLatch controller = new CountDownLatch(actual_n_threads);
+        Counter counter = new Counter(controller);
+
+        for (int i = 0; i < actual_n_threads; i++) {
+            ArrayList<StringTokenizer> tokenizer_batch = create_batch(i, actual_n_threads, sts);
+            counter.spawn_thread(tokenizer_batch, token);
         }
 
-        Counter counter = new Counter();
-
-        WorkerManager workerManager = new WorkerManager();
-
-        for (StringTokenizer st : sts) {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    while (st.hasMoreTokens()) {
-                        if (st.nextToken().equalsIgnoreCase(token)) {
-                            counter.increment();
-                        }
-                    }
-                }
-            };
-            Thread t = Thread.ofVirtual().start(runnable);
-            workerManager.addWorker(t);
+        try {
+            controller.await();
         }
-
-        workerManager.wait_workers();
+        catch (InterruptedException e) {
+            System.out.println("One or more threads have been interrupted in DocumentData");
+        }
 
         return counter.get();
-
     }
 
     public int get_token_frequency(int i) {
@@ -104,6 +95,35 @@ public class DocumentData {
 
     public String get_name() {
         return this.name;
+    }
+
+    static class Counter {
+        private int total = 0;
+        private final CountDownLatch controller;
+
+        public Counter(CountDownLatch controller) {
+            this.controller = controller;
+        }
+
+        public synchronized void increment() {
+            total++;
+        }
+
+        public synchronized int get() {
+            return total;
+        }
+
+        public void spawn_thread(ArrayList<StringTokenizer> sts, String token) {
+            Runnable runnable = () -> {
+                for (StringTokenizer st : sts) {
+                    while (st.hasMoreTokens())
+                        if (st.nextToken().equalsIgnoreCase(token))
+                            increment();
+                }
+                controller.countDown();
+            };
+            Thread.ofVirtual().start(runnable);
+        }
     }
 
 }

@@ -1,10 +1,14 @@
 import Models.BM25;
 import Models.DocumentData;
 import Models.Query;
-import Models.WorkerManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.concurrent.CountDownLatch;
+
+import static Models.Utils.create_batch;
 
 /*
     Pdfs sourced from https://github.com/tpn/pdfs
@@ -12,7 +16,11 @@ import java.io.IOException;
 
 public class Main {
 
-    static public void main(String args[]) {
+    static final int n_threads = 40;
+
+    static public void main(String[] args) {
+
+        System.setErr(new PrintStream(OutputStream.nullOutputStream())); //TODO: Remove
 
         String path = "../../data/subset/";
         File[] files = (new File(path)).listFiles();
@@ -22,36 +30,49 @@ public class Main {
             Query query = new Query("partial function");
             BM25 bm25 = new BM25(query);
 
-            WorkerManager workerManager = new WorkerManager();
+            final int actual_n_threads = Math.min(n_threads, files.length);
+            CountDownLatch controller = new CountDownLatch(actual_n_threads);
 
-            for (File file : files) {
-                String filename = file.getName();
-
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            bm25.add(new DocumentData(path + filename, query));
-                            System.out.println("Successfully read the file " + filename);
-                        }
-                        catch (IOException e) {
-                            System.out.println("Could not read the file " + filename);
-                        }
-                    }
-                };
-                Thread t = Thread.ofVirtual().start(runnable);
-                workerManager.addWorker(t);
+            for (int i = 0; i < actual_n_threads; i++) {
+                File[] file_batch = create_batch(i, actual_n_threads, files);
+                spawn_thread(file_batch, path, query, bm25, controller);
             }
 
-            workerManager.wait_workers();
+            try {
+                controller.await();
+            }
+            catch (InterruptedException e) {
+                System.out.println("One or more threads have been interrupted in Main");
+            }
 
             System.out.println("Processed "  + bm25.size() + " out of " + files.length + " files");
             System.out.println("Most relevant doc: " + bm25.get_most_relevant_doc());
-
         }
         else {
             System.out.println("No documents found");
         }
+    }
+
+    /*
+        Processes the content of 'files' on a separate thread
+     */
+    private static void spawn_thread(
+            File[] files, String path, Query query, BM25 bm25, CountDownLatch controller) {
+
+        Runnable runnable = () -> {
+            for (File file : files) {
+                String filename = file.getName();
+                try {
+                    bm25.add(new DocumentData(path + filename, query));
+                    System.out.println("Successfully read the file " + filename);
+                } catch (IOException e) {
+                    System.out.println("Could not read the file " + filename);
+                }
+            }
+            controller.countDown();
+        };
+
+        Thread.ofVirtual().start(runnable);
     }
 
 }

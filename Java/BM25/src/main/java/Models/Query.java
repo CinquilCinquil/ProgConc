@@ -1,39 +1,34 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Query {
 
-    private int n_tokens;
-    private String my_text;
+    private ArrayList<String> tokens;
     private final String DEFAULT_SEPARATION = " ";
 
     public Query(String text) {
-        this.my_text = text;
-        this.n_tokens = get_tokenizer().countTokens();
-    }
 
-    private StringTokenizer get_tokenizer() {
-        return new StringTokenizer(this.my_text, DEFAULT_SEPARATION);
-    }
-
-    public int get_length() {
-        return n_tokens;
-    }
-
-    public String get_qi(int i) {
-
-        StringTokenizer st = get_tokenizer();
+        StringTokenizer st = new StringTokenizer(text, DEFAULT_SEPARATION);
+        tokens = new ArrayList<>();
 
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
-            if (i <= 0) {
-                return token;
-            }
-            i --;
+            tokens.add(token);
         }
+    }
 
-        System.out.println("Hey something is wrong :(");
-        return null;
+
+    public int get_length() {
+        return tokens.size();
+    }
+
+    public String get_qi(int i) {
+        return tokens.get(i);
+    }
+
+    public ArrayList<String> get_tokens() {
+        return tokens;
     }
 }

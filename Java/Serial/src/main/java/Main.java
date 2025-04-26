@@ -4,7 +4,6 @@ import Models.Query;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /*
     Pdfs sourced from https://github.com/tpn/pdfs

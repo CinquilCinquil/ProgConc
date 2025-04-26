@@ -7,19 +7,19 @@ import static Models.Utils.create_batch;
 
 public class BM25 {
 
+    public double k = 1.5, b = 0.75; // BM25 parameters
     private final static int n_threads = 40;
 
-    public double k = 1.5, b = 0.75;
     private double avgdl; // Average document length
-    private Query query;
-    private ArrayList<DocumentData> docs;
-    private ArrayList<Integer> amount_of_documents_with_token;
+    private final Query query;
+    private final ArrayList<DocumentData> docs;
+    private final ArrayList<Integer> amount_of_documents_with_token;
 
     public BM25(Query query) {
         this.query = query;
-        this.amount_of_documents_with_token = new ArrayList<>();
         this.docs = new ArrayList<>();
 
+        this.amount_of_documents_with_token = new ArrayList<>();
         for (int i = 0; i < query.get_length(); i++) {
             amount_of_documents_with_token.add(0);
         }
@@ -45,12 +45,9 @@ public class BM25 {
     }
 
     public void update_IDF(DocumentData doc) {
-        for (int i = 0;i < query.get_length();i ++) {
-            if (doc.has_token(i)) {
-                amount_of_documents_with_token.set(i,
-                        amount_of_documents_with_token.get(i) + 1);
-            }
-        }
+        for (int i = 0;i < query.get_length();i ++)
+            if (doc.has_token(i))
+                amount_of_documents_with_token.set(i, amount_of_documents_with_token.get(i) + 1);
     }
 
     public double IDF(int i) {
@@ -62,6 +59,10 @@ public class BM25 {
     }
 
     public String get_most_relevant_doc() {
+
+        /*
+            Calculates the score for each doc on a separate thread
+         */
 
         this.avgdl *= 1.0 / docs.size();
 
@@ -78,7 +79,7 @@ public class BM25 {
             controller.await();
         }
         catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("One or more threads have been interrupted in BM25");
         }
 
         DocumentData most_relevant_doc = auction.get_highest_bidder();
@@ -92,7 +93,7 @@ public class BM25 {
     class Auction {
         public DocumentData highest_bidder = null;
         private double highest_bidder_score = Double.NEGATIVE_INFINITY;
-        private CountDownLatch controller;
+        private final CountDownLatch controller;
 
         public Auction(CountDownLatch controller) {
             this.controller = controller;

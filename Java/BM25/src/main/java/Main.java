@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
 import static Models.Utils.create_batch;
@@ -19,17 +18,17 @@ public class Main {
 
     static final int n_threads = 40;
 
-    static public void main(String args[]) {
+    static public void main(String[] args) {
 
         System.setErr(new PrintStream(OutputStream.nullOutputStream())); //TODO: Remove
 
-        String path = "../../data/subset/";
+        String path = "../../data/pdfs/";
         File[] files = (new File(path)).listFiles();
 
         if (files != null) {
 
             Query query = new Query("partial function");
-            final BM25 bm25 = new BM25(query);
+            BM25 bm25 = new BM25(query);
 
             final int actual_n_threads = Math.min(n_threads, files.length);
             CountDownLatch controller = new CountDownLatch(actual_n_threads);
@@ -43,7 +42,7 @@ public class Main {
                 controller.await();
             }
             catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("One or more threads have been interrupted in Main");
             }
 
             System.out.println("Processed "  + bm25.size() + " out of " + files.length + " files");
@@ -54,6 +53,9 @@ public class Main {
         }
     }
 
+    /*
+        Processes the content of 'files' on a separate thread
+     */
     private static void spawn_thread(
             File[] files, String path, Query query, BM25 bm25, CountDownLatch controller) {
 

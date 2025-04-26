@@ -15,25 +15,25 @@ import static java.lang.Math.max;
 public class DocumentData {
 
     private final static int n_threads = 40;
-
-    private String name;
-    private int n_tokens;
-    private ArrayList<Integer> token_freq;
-    private final String DEFAULT_SEPARATION = " ";
     private final int block_size = 5000;
-    private int n_blocks;
+    private final String DEFAULT_SEPARATION = " ";
+
+    private final String name;
+    private final int n_tokens;
+    private final ArrayList<Integer> token_freq;
+    private final int n_blocks;
 
     public DocumentData(String filepath, Query query) throws IOException {
 
-        this.name = filepath;
-
+        // Extracting text from document
         PDDocument document = PDDocument.load(new File(filepath));
         var my_text = (new PDFTextStripper()).getText(document);
         document.close();
+
         StringTokenizer tokenizer = new StringTokenizer(my_text, DEFAULT_SEPARATION);
 
+        this.name = filepath;
         this.n_tokens = tokenizer.countTokens();
-
         this.n_blocks = max(n_tokens/block_size, 1);
 
         this.token_freq = new ArrayList<>();
@@ -43,6 +43,9 @@ public class DocumentData {
 
     }
 
+    /*
+        Splits 'text' in chunks (of size 'block_size') and creates a StringTokenizer for each
+     */
     private ArrayList<StringTokenizer> get_tokenizers(String text) {
         ArrayList<StringTokenizer> tokenizers = new ArrayList<StringTokenizer>();
         for (int i = 0; i < n_blocks; i++) {
@@ -72,7 +75,7 @@ public class DocumentData {
             controller.await();
         }
         catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("One or more threads have been interrupted in DocumentData");
         }
 
         return counter.get();
@@ -96,7 +99,7 @@ public class DocumentData {
 
     static class Counter {
         private int total = 0;
-        private CountDownLatch controller;
+        private final CountDownLatch controller;
 
         public Counter(CountDownLatch controller) {
             this.controller = controller;

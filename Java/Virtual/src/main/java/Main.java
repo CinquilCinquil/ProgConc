@@ -22,7 +22,7 @@ public class Main {
 
         System.setErr(new PrintStream(OutputStream.nullOutputStream())); //TODO: Remove
 
-        String path = "../../data/subset/";
+        String path = "../../data/pdfs/";
         File[] files = (new File(path)).listFiles();
 
         if (files != null) {

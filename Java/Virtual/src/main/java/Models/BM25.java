@@ -38,7 +38,7 @@ public class BM25 {
         return sum;
     }
 
-    public void add(DocumentData doc) {
+    public synchronized void add(DocumentData doc) {
         this.docs.add(doc);
         this.avgdl += doc.get_n_tokens();
         update_IDF(doc);

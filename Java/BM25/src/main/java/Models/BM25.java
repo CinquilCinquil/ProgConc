@@ -1,8 +1,13 @@
 package Models;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+
+import static Models.Utils.create_batch;
 
 public class BM25 {
+
+    private final static int n_threads = 40;
 
     public double k = 1.5, b = 0.75;
     private double avgdl; // Average document length
@@ -60,38 +65,21 @@ public class BM25 {
 
         this.avgdl *= 1.0 / docs.size();
 
-        class Auction {
-            double highest_bidder_score = Double.NEGATIVE_INFINITY;
-            DocumentData highest_bidder = null;
+        final int actual_n_threads = Math.min(n_threads, docs.size());
+        final CountDownLatch controller = new CountDownLatch(actual_n_threads);
+        Auction auction = new Auction(controller);
 
-            public synchronized void challenge_highest_bidder(Double bid, DocumentData doc) {
-                if (bid >= highest_bidder_score) {
-                    highest_bidder_score = bid;
-                    highest_bidder = doc;
-                }
-            }
-
-            public DocumentData get_highest_bidder() {
-                return highest_bidder;
-            }
+        for (int i = 0; i < actual_n_threads; i++) {
+            ArrayList<DocumentData> doc_batch = create_batch(i, actual_n_threads, docs);
+            auction.spawn_thread(doc_batch, query);
         }
 
-        Auction auction = new Auction();
-        WorkerManager workerManager = new WorkerManager();
-
-        for (DocumentData doc : docs) {
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    double scr = score(doc, query);
-                    auction.challenge_highest_bidder(scr, doc);
-                }
-            });
-            t.start();
-            workerManager.addWorker(t);
+        try {
+            controller.await();
         }
-
-        workerManager.wait_workers();
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         DocumentData most_relevant_doc = auction.get_highest_bidder();
         return most_relevant_doc == null ? "" : most_relevant_doc.get_name();
@@ -99,6 +87,38 @@ public class BM25 {
 
     public int size() {
         return docs.size();
+    }
+
+    class Auction {
+        public DocumentData highest_bidder = null;
+        private double highest_bidder_score = Double.NEGATIVE_INFINITY;
+        private CountDownLatch controller;
+
+        public Auction(CountDownLatch controller) {
+            this.controller = controller;
+        }
+
+        public synchronized void challenge_highest_bidder(Double bid, DocumentData doc) {
+            if (bid >= highest_bidder_score) {
+                highest_bidder_score = bid;
+                highest_bidder = doc;
+            }
+        }
+
+        public DocumentData get_highest_bidder() {
+            return highest_bidder;
+        }
+
+        public void spawn_thread(ArrayList<DocumentData> docs, Query query) {
+            Thread t = new Thread(() -> {
+                for (DocumentData doc : docs) {
+                    double scr = score(doc, query);
+                    challenge_highest_bidder(scr, doc);
+                }
+                controller.countDown();
+            });
+            t.start();
+        }
     }
 
 }

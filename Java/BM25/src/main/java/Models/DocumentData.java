@@ -7,10 +7,14 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.concurrent.CountDownLatch;
 
+import static Models.Utils.create_batch;
 import static java.lang.Math.max;
 
 public class DocumentData {
+
+    private final static int n_threads = 40;
 
     private String name;
     private int n_tokens;
@@ -55,39 +59,23 @@ public class DocumentData {
             Reads each chunk of the text in a separate thread
          */
 
-        class Counter {
-            private int total = 0;
-            public synchronized void increment() {
-                total++;
-            }
-            public synchronized int get() {
-                return total;
-            }
+        final int actual_n_threads = Math.min(n_threads, sts.size());
+        final CountDownLatch controller = new CountDownLatch(actual_n_threads);
+        Counter counter = new Counter(controller);
+
+        for (int i = 0; i < actual_n_threads; i++) {
+            ArrayList<StringTokenizer> tokenizer_batch = create_batch(i, actual_n_threads, sts);
+            counter.spawn_thread(tokenizer_batch, token);
         }
 
-        Counter counter = new Counter();
-
-        WorkerManager workerManager = new WorkerManager();
-
-        for (StringTokenizer st : sts) {
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (st.hasMoreTokens()) {
-                        if (st.nextToken().equalsIgnoreCase(token)) {
-                            counter.increment();
-                        }
-                    }
-                }
-            });
-            t.start();
-            workerManager.addWorker(t);
+        try {
+            controller.await();
         }
-
-        workerManager.wait_workers();
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return counter.get();
-
     }
 
     public int get_token_frequency(int i) {
@@ -104,6 +92,35 @@ public class DocumentData {
 
     public String get_name() {
         return this.name;
+    }
+
+    static class Counter {
+        private int total = 0;
+        private CountDownLatch controller;
+
+        public Counter(CountDownLatch controller) {
+            this.controller = controller;
+        }
+
+        public synchronized void increment() {
+            total++;
+        }
+
+        public synchronized int get() {
+            return total;
+        }
+
+        public void spawn_thread(ArrayList<StringTokenizer> sts, String token) {
+            Thread t = new Thread(() -> {
+                for (StringTokenizer st : sts) {
+                    while (st.hasMoreTokens())
+                        if (st.nextToken().equalsIgnoreCase(token))
+                            increment();
+                }
+                controller.countDown();
+            });
+            t.start();
+        }
     }
 
 }

@@ -79,3 +79,18 @@ wrapper :: (a -> IO b -> IO ()) -> (c -> IO b) -> (a, c) -> IO ()
 wrapper f g (p, q) = do
        f p (g q)
        return ()
+
+split_into_n_lists :: Int -> [a] -> [[a]]
+split_into_n_lists _ [] = []
+split_into_n_lists 1 xs = [xs]
+split_into_n_lists n xs
+       | (length xs) < n = split_into_n_lists (length xs) xs
+       | otherwise = let k = ((length xs) `div` n) in
+              [take k xs] ++ (split_into_n_lists (n - 1) (snd $ splitAt k xs))
+
+fork_aux :: (IO () -> IO ThreadId) -> ([b] -> IO [a]) -> ([b] -> IO ThreadId)
+fork_aux fork f = do
+       let aux x = do
+              x' <- x
+              return ()
+       fork . aux . f

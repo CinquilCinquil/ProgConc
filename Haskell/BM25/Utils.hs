@@ -34,6 +34,19 @@ conct_to_head :: Char -> [String] -> [String]
 conct_to_head c [] = [[c]]
 conct_to_head c (x:xs) = ([c] ++ x) : xs
 
+tokenizer :: String -> [String]
+tokenizer "" = []
+tokenizer (' ':[]) = []
+tokenizer (' ':xs) = if ((head xs) == ' ') then tokenizer xs else []:(tokenizer xs)
+tokenizer (x:xs) = conct_to_head x (tokenizer xs)
+
+clean_str :: String -> String
+clean_str s = remove_str "\\" $ remove_str "\"" $ (remove_sequence_of_str ["\\", "n"] s)
+
+token_frequency :: [String] -> String -> Int
+token_frequency [] _ = 0
+token_frequency (tk:doc) token = (token_frequency doc token) + (if tk == token then 1 else 0)
+
 -- whether X appears as a substring in the start of Y
 fits_at_ys_start :: String -> String -> Bool
 fits_at_ys_start [] _ = True
@@ -61,3 +74,23 @@ rsstr ((x':xs'):xs) (y:ys) = if fits_at_ys_start (x':xs') (y:ys)
 ---------- OTHERS
 
 not_empty = not . null :: [a] -> Bool
+
+wrapper :: (a -> IO b -> IO ()) -> (c -> IO b) -> (a, c) -> IO ()
+wrapper f g (p, q) = do
+       f p (g q)
+       return ()
+
+split_into_n_lists :: Int -> [a] -> [[a]]
+split_into_n_lists _ [] = []
+split_into_n_lists 1 xs = [xs]
+split_into_n_lists n xs
+       | (length xs) < n = split_into_n_lists (length xs) xs
+       | otherwise = let k = ((length xs) `div` n) in
+              [take k xs] ++ (split_into_n_lists (n - 1) (snd $ splitAt k xs))
+
+fork_aux :: (IO () -> IO ThreadId) -> ([b] -> IO [a]) -> ([b] -> IO ThreadId)
+fork_aux fork f = do
+       let aux x = do
+              x' <- x
+              return ()
+       fork . aux . f

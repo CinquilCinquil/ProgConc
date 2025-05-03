@@ -5,6 +5,8 @@ import Control.Monad
 import Control.DeepSeq
 import DocReader (DocumentData, name, n_tokens, amount_of_documents_with, get_token_freq)
 
+-- Obs: you gotta use ':set -package deepseq' before loading
+
 ------------ External
 
 type Token = String
@@ -13,7 +15,7 @@ type DocumentText = [Token]
 get_most_relevant_doc ::  [(String, Double)] -> (String, Double)
 get_most_relevant_doc [] = ("", 0)
 get_most_relevant_doc ((name, score) : xs) = do
-    best_doc = get_most_relevant_doc xs
+    let best_doc = get_most_relevant_doc xs
     if score >= (snd best_doc) then (name, score) else best_doc
 
 multithread_doc_score :: (Double, Double, [Double]) -> [Token] ->

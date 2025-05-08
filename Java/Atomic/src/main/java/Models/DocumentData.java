@@ -41,7 +41,6 @@ public class DocumentData {
         for (String token : query.get_tokens()) {
             this.token_freq.add(get_token_frequency(token, get_tokenizers(my_text)));
         }
-
     }
 
     /*
@@ -119,7 +118,7 @@ public class DocumentData {
             Runnable runnable = () -> {
                 for (StringTokenizer st : sts) {
                     while (st.hasMoreTokens())
-                        if (st.nextToken().equalsIgnoreCase(token))
+                        if (cleanString(st.nextToken()).equalsIgnoreCase(token))
                             increment();
                 }
                 controller.countDown();
@@ -128,4 +127,7 @@ public class DocumentData {
         }
     }
 
+    private static String cleanString(String str) {
+        return str.replaceAll("[^\\n\\r\\t\\p{Print}]", "");
+    }
 }

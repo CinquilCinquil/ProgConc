@@ -27,9 +27,8 @@ public class DocumentData {
         this.n_tokens = tokenizer.countTokens();
         this.token_freq = new ArrayList<>();
         for (String token : query.get_tokens()) {
-            this.token_freq.add(get_token_frequency(token, tokenizer));
+            this.token_freq.add(get_token_frequency(token, new StringTokenizer(my_text, DEFAULT_SEPARATION)));
         }
-
     }
 
     private int get_token_frequency(String token, StringTokenizer st) {
@@ -37,7 +36,7 @@ public class DocumentData {
         int total = 0;
 
         while (st.hasMoreTokens()) {
-            if (st.nextToken().equalsIgnoreCase(token)) {
+            if (cleanString(st.nextToken()).equalsIgnoreCase(token)) {
                 total ++;
             }
         }
@@ -62,4 +61,7 @@ public class DocumentData {
         return this.name;
     }
 
+    private static String cleanString(String str) {
+        return str.replaceAll("[^\\n\\r\\t\\p{Print}]", "");
+    }
 }

@@ -117,13 +117,17 @@ public class DocumentData {
             Thread t = new Thread(() -> {
                 for (StringTokenizer st : sts) {
                     while (st.hasMoreTokens())
-                        if (st.nextToken().equalsIgnoreCase(token))
+                        if (cleanString(st.nextToken()).equalsIgnoreCase(token))
                             increment();
                 }
                 controller.countDown();
             });
             t.start();
         }
+    }
+	
+	private static String cleanString(String str) {
+        return str.replaceAll("[^\\n\\r\\t\\p{Print}]", "");
     }
 
 }

@@ -13,7 +13,7 @@ public class BM25 {
 
     private double avgdl; // Average document length
     private final Query query;
-    private final ArrayList<DocumentData> docs;
+    protected final ArrayList<DocumentData> docs;
     private final ArrayList<Integer> amount_of_documents_with_token;
 
     public BM25(Query query) {
@@ -91,10 +91,10 @@ public class BM25 {
         return docs.size();
     }
 
-    class Auction {
+    public class Auction {
         public AtomicReference<DocumentData> highest_bidder;
-        private final AtomicReference<Double> highest_bidder_score;
-        private final CountDownLatch controller;
+        protected final AtomicReference<Double> highest_bidder_score;
+        protected final CountDownLatch controller;
 
         public Auction(CountDownLatch controller) {
             this.controller = controller;

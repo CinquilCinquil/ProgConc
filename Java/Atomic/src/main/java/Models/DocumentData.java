@@ -43,6 +43,14 @@ public class DocumentData {
         }
     }
 
+    // Constructor Necessary for JCStress
+    protected DocumentData() {
+        this.name = null;
+        this.n_tokens = 0;
+        this.token_freq = new ArrayList<>();
+        this.n_blocks = 0;
+    }
+
     /*
         Splits 'text' in chunks (of size 'block_size') and creates a StringTokenizer for each
      */
@@ -97,9 +105,9 @@ public class DocumentData {
         return this.name;
     }
 
-    static class Counter {
+    public static class Counter {
         private final AtomicInteger total;
-        private final CountDownLatch controller;
+        protected final CountDownLatch controller;
 
         public Counter(CountDownLatch controller) {
             this.controller = controller;

@@ -13,7 +13,9 @@ public class JMHTest {
     public static void main(String[] args) throws Exception {
 
         Options opt = new OptionsBuilder()
-                .include(DocumentData_BenchTest.class.getSimpleName())
+                .include(BM25_BenchTest.class.getSimpleName()
+                        + "|" + DocumentData_BenchTest.class.getSimpleName()
+                        + "|" + Query_BenchTest.class.getSimpleName())
                 .shouldDoGC(true)
                 .jvmArgs()
                 .build();

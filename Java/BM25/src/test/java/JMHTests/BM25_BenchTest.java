@@ -4,17 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import Models.BM25;
 import Models.DocumentData;
 import Models.Query;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
-/*
 @State(Scope.Thread)
 @Fork(value = 1)
 @Warmup(iterations = 3)
@@ -142,4 +139,3 @@ public class BM25_BenchTest {
         }
     }
 }
-*/

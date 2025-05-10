@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class JCStress_Test1 {
+public class BM25_JCStressTest {
 
     public final static String test_dir = "../../data/tests/";
     public final static String name1 = test_dir + "CUDA Thread-Indexing Cheatsheet.pdf";
@@ -68,7 +68,7 @@ public class JCStress_Test1 {
             try {
                 myState.add(new DocumentDataStub(name1));
             } catch(IOException e) {
-                System.out.println("JCStress_Test docs IOException. This should not happen.");
+                System.out.println("JCStress_Test docs IOException (id1). This should not happen.");
             }
         }
         @Actor
@@ -76,7 +76,7 @@ public class JCStress_Test1 {
             try {
                 myState.add(new DocumentDataStub(name2));
             } catch(IOException e) {
-                System.out.println("JCStress_Test docs IOException. This should not happen.");
+                System.out.println("JCStress_Test docs IOException (id2). This should not happen.");
             }
         }
 
@@ -108,7 +108,7 @@ public class JCStress_Test1 {
                 myState.auctionState.challenge_highest_bidder(score1.get(), new DocumentDataStub(name1));
                 myState.auctionState.myController().countDown();
             } catch(IOException e) {
-                System.out.println("JCStress_Test docs IOException. This should not happen.");
+                System.out.println("JCStress_Test docs IOException (id3). This should not happen.");
             }
         }
         @Actor
@@ -117,7 +117,7 @@ public class JCStress_Test1 {
                 myState.auctionState.challenge_highest_bidder(score2.get(), new DocumentDataStub(name2));
                 myState.auctionState.myController().countDown();
             } catch(IOException e) {
-                System.out.println("JCStress_Test docs IOException. This should not happen.");
+                System.out.println("JCStress_Test docs IOException (id4). This should not happen.");
             }
         }
 
@@ -128,7 +128,7 @@ public class JCStress_Test1 {
                 myState.auctionState.myController().await();
             }
             catch (InterruptedException e) {
-                System.out.println("JCStress_Test docs IOException. This should not happen.");
+                System.out.println("JCStress_Test docs IOException (id5). This should not happen.");
             }
 
             double actualScore1 = score1.get();

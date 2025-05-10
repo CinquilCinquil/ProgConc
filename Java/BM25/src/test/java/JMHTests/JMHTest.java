@@ -1,11 +1,8 @@
 package JMHTests;
 
-import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-
-import java.util.concurrent.TimeUnit;
 
 public class JMHTest {
     //private static final Log log = LogFactory.getLog(JMHTest.class);
@@ -15,7 +12,8 @@ public class JMHTest {
         Options opt = new OptionsBuilder()
                 .include(BM25_BenchTest.class.getSimpleName()
                         + "|" + DocumentData_BenchTest.class.getSimpleName()
-                        + "|" + Query_BenchTest.class.getSimpleName())
+                        + "|" + Query_BenchTest.class.getSimpleName()
+                        + "|" + Utils_BenchTest.class.getSimpleName())
                 .shouldDoGC(true)
                 .jvmArgs()
                 .build();

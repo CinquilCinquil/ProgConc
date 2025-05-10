@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 1)
 @Warmup(iterations = 3)
 @Measurement(iterations = 8)
-@OutputTimeUnit(TimeUnit.SECONDS)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 @BenchmarkMode(Mode.Throughput)
 public class Query_BenchTest {
 
@@ -22,7 +22,6 @@ public class Query_BenchTest {
     }
 
     @Benchmark
-    @Measurement(iterations = 4)
     public void test_constructor(Blackhole bh) {
         for (int i = 0; i < e4; i++) {
             Query q = new Query(example_string);

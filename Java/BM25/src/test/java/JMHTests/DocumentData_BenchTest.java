@@ -1,6 +1,5 @@
 package JMHTests;
 
-import JCStressTests.DocumentData_JCStressTest;
 import Models.DocumentData;
 import Models.Query;
 import org.apache.pdfbox.pdmodel.PDDocument;

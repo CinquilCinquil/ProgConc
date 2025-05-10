@@ -14,7 +14,13 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
 
+/*
 @State(Scope.Thread)
+@Fork(value = 1)
+@Warmup(iterations = 3)
+@Measurement(iterations = 8)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@BenchmarkMode(Mode.Throughput)
 public class BM25_BenchTest {
 
     public static int e4 = 10000, e3 = 1000, e2 = 100, e1 = 10;
@@ -136,3 +142,4 @@ public class BM25_BenchTest {
         }
     }
 }
+*/

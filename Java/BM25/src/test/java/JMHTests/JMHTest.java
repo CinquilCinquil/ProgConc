@@ -13,13 +13,8 @@ public class JMHTest {
     public static void main(String[] args) throws Exception {
 
         Options opt = new OptionsBuilder()
-                .include(BM25_BenchTest.class.getSimpleName())
-                .warmupIterations(3)
+                .include(DocumentData_BenchTest.class.getSimpleName())
                 .shouldDoGC(true)
-                .measurementIterations(8)
-                .forks(1)
-                .timeUnit(TimeUnit.MILLISECONDS)
-                .mode(Mode.Throughput)
                 .jvmArgs()
                 .build();
 

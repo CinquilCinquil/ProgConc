@@ -54,7 +54,7 @@ public class DocumentData {
     /*
         Splits 'text' in chunks (of size 'block_size') and creates a StringTokenizer for each
      */
-    private ArrayList<StringTokenizer> get_tokenizers(String text) {
+    public ArrayList<StringTokenizer> get_tokenizers(String text) {
         ArrayList<StringTokenizer> tokenizers = new ArrayList<StringTokenizer>();
         for (int i = 0; i < n_blocks; i++) {
             int block_end = i < n_blocks - 1 ? block_size * (i + 1) : text.length();
@@ -133,8 +133,8 @@ public class DocumentData {
             Thread.ofPlatform().start(runnable);
         }
     }
-	
-	private static String cleanString(String str) {
+
+    public static String cleanString(String str) {
         return str.replaceAll("[^\\n\\r\\t\\p{Print}]", "");
     }
 

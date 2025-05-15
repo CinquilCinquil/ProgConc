@@ -90,6 +90,11 @@ public class BM25 {
         return docs.size();
     }
 
+    // Method Necessary for JMH tests
+    public void resetAvgdl() {
+        this.avgdl = 2 * docs.size();
+    }
+
     public class Auction {
         public DocumentData highest_bidder = null;
         protected volatile double highest_bidder_score = Double.NEGATIVE_INFINITY;

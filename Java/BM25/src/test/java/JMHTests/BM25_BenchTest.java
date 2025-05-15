@@ -21,12 +21,12 @@ import org.openjdk.jmh.infra.Blackhole;
 public class BM25_BenchTest {
 
     public static int e4 = 10000, e3 = 1000, e2 = 100, e1 = 10;
-    public static Query query;
-    public static BM25 bm25;
-    public static BM25 bm25_heavy;
-    public static BM25Copy bm25_copy;
+    public static Query query = new Query("cool example");
+    public static BM25 bm25 = new BM25(query);
+    public static BM25 bm25_heavy = new BM25(query);
+    public static BM25Copy bm25_copy = new BM25Copy(new CountDownLatch(0));
     public static DocumentData doc;
-    public static Random random;
+    public static Random random = new Random();
     public final static String test_dir = "../../data/tests/";
     public final static String name1 = test_dir + "CUDA Thread-Indexing Cheatsheet.pdf";
 
@@ -52,12 +52,6 @@ public class BM25_BenchTest {
 
     @Setup
     public void setup() {
-        query = new Query("cool example");
-        bm25 = new BM25(query);
-        bm25_heavy = new BM25(query);
-        bm25_copy = new BM25Copy(new CountDownLatch(0));
-        random = new Random();
-
         try {
             doc = new DocumentData(name1, query);
             bm25.add(doc);

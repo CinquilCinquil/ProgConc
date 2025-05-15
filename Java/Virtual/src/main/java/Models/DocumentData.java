@@ -43,10 +43,18 @@ public class DocumentData {
 
     }
 
+    // Constructor Necessary for JMH
+    protected DocumentData() {
+        this.name = null;
+        this.n_tokens = 0;
+        this.token_freq = new ArrayList<>();
+        this.n_blocks = 0;
+    }
+
     /*
         Splits 'text' in chunks (of size 'block_size') and creates a StringTokenizer for each
      */
-    private ArrayList<StringTokenizer> get_tokenizers(String text) {
+    public ArrayList<StringTokenizer> get_tokenizers(String text) {
         ArrayList<StringTokenizer> tokenizers = new ArrayList<StringTokenizer>();
         for (int i = 0; i < n_blocks; i++) {
             int block_end = i < n_blocks - 1 ? block_size * (i + 1) : text.length();
@@ -97,7 +105,7 @@ public class DocumentData {
         return this.name;
     }
 
-    static class Counter {
+    public static class Counter {
         private int total = 0;
         private final CountDownLatch controller;
 
@@ -125,8 +133,8 @@ public class DocumentData {
             Thread.ofVirtual().start(runnable);
         }
     }
-	
-	private static String cleanString(String str) {
+
+    public static String cleanString(String str) {
         return str.replaceAll("[^\\n\\r\\t\\p{Print}]", "");
     }
 

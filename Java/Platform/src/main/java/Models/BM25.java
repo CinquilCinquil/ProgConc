@@ -12,7 +12,7 @@ public class BM25 {
 
     private double avgdl; // Average document length
     private final Query query;
-    private final ArrayList<DocumentData> docs;
+    protected final ArrayList<DocumentData> docs;
     private final ArrayList<Integer> amount_of_documents_with_token;
 
     public BM25(Query query) {
@@ -90,7 +90,12 @@ public class BM25 {
         return docs.size();
     }
 
-    class Auction {
+    // Method Necessary for JMH tests
+    public void resetAvgdl() {
+        this.avgdl = 2 * docs.size();
+    }
+
+    public class Auction {
         public DocumentData highest_bidder = null;
         private double highest_bidder_score = Double.NEGATIVE_INFINITY;
         private final CountDownLatch controller;

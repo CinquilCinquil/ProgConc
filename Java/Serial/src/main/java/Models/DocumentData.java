@@ -31,7 +31,7 @@ public class DocumentData {
         }
     }
 
-    private int get_token_frequency(String token, StringTokenizer st) {
+    public int get_token_frequency(String token, StringTokenizer st) {
 
         int total = 0;
 
@@ -61,7 +61,7 @@ public class DocumentData {
         return this.name;
     }
 
-    private static String cleanString(String str) {
+    public static String cleanString(String str) {
         return str.replaceAll("[^\\n\\r\\t\\p{Print}]", "");
     }
 }

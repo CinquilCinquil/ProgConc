@@ -90,20 +90,20 @@ public class BM25_BenchTest {
 
     @Benchmark
     public void test_add(Blackhole bh) {
+        BM25 bm25 = new BM25(query);
         for (int i = 0; i < e4; i++) {
-            BM25 bm25 = new BM25(query);
             bm25.add(doc);
-            bh.consume(bm25);
         }
+        bh.consume(bm25);
     }
 
     @Benchmark
     public void test_update_IDF(Blackhole bh) {
+        BM25 bm25 = new BM25(query);
         for (int i = 0; i < e4; i++) {
-            BM25 bm25 = new BM25(query);
             bm25.update_IDF(doc);
-            bh.consume(bm25);
         }
+        bh.consume(bm25);
     }
 
     @Benchmark

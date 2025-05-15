@@ -39,13 +39,13 @@ public class BM25 {
         return sum;
     }
 
-    public synchronized void add(DocumentData doc) {
+    public synchronized void add(DocumentData doc) { // Use atomic
         this.docs.add(doc);
         this.avgdl += doc.get_n_tokens();
         update_IDF(doc);
     }
 
-    public void update_IDF(DocumentData doc) {
+    public void update_IDF(DocumentData doc) { // here as well woth query
         for (int i = 0;i < query.get_length();i ++)
             if (doc.has_token(i))
                 amount_of_documents_with_token.set(i, amount_of_documents_with_token.get(i) + 1);
@@ -89,6 +89,11 @@ public class BM25 {
 
     public int size() {
         return docs.size();
+    }
+
+    // Method Necessary for JMH tests
+    public void resetAvgdl() {
+        this.avgdl = 2 * docs.size();
     }
 
     public class Auction {

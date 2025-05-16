@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import static Models.Utils.create_batch;
+import static BM25v.Models.Utils.create_batch;
 
 @State(Scope.Thread)
 @Fork(value = 1)

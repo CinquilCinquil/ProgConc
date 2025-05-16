@@ -1,4 +1,4 @@
-package Models;
+package BM25v.Models;
 
 import java.util.ArrayList;
 import java.util.Arrays;

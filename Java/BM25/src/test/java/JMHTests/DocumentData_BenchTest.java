@@ -1,7 +1,7 @@
 package JMHTests;
 
-import Models.DocumentData;
-import Models.Query;
+import BM25v.Models.DocumentData;
+import BM25v.Models.Query;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.openjdk.jmh.annotations.*;

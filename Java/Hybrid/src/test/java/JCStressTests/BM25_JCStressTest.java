@@ -1,8 +1,8 @@
 package JCStressTests;
 
-import Models.BM25;
-import Models.DocumentData;
-import Models.Query;
+import Hybridv.Models.BM25;
+import Hybridv.Models.DocumentData;
+import Hybridv.Models.Query;
 import org.openjdk.jcstress.annotations.*;
 import org.openjdk.jcstress.infra.results.II_Result;
 import org.openjdk.jcstress.infra.results.III_Result;

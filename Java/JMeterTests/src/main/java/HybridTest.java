@@ -1,5 +1,6 @@
-import BM25v.Models.BM25;
-import BM25v.Models.DocumentData;
+import Hybridv.Main;
+import Hybridv.Models.BM25;
+import Hybridv.Models.DocumentData;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
@@ -18,11 +19,11 @@ public class HybridTest extends AbstractJavaSamplerClient implements Serializabl
 
         SampleResult result = new SampleResult();
         result.sampleStart();
-        result.setSampleLabel("BM25 Test Sample");
+        result.setSampleLabel("Hybrid Test Sample");
 
-        BM25v.Main.n_threads = Integer.parseInt(param_main_n_threads);
-        BM25v.Main.query_text = param_query;
-        BM25v.Main.path = param_path;
+        Main.n_threads = Integer.parseInt(param_main_n_threads);
+        Main.query_text = param_query;
+        Main.path = param_path;
         BM25.n_threads = Integer.parseInt(param_bm25_n_threads);
         DocumentData.n_threads = Integer.parseInt(param_docdata_n_threads);
         DocumentData.block_size = Integer.parseInt(param_docdata_block_size);
@@ -32,13 +33,13 @@ public class HybridTest extends AbstractJavaSamplerClient implements Serializabl
         if (BM25v.Main.total_processed_docs == 0) {
             result.sampleEnd();
             result.setResponseCode("500");
-            result.setResponseMessage("NOK " + BM25v.Main.total_processed_docs);
+            result.setResponseMessage("NOK " + Main.total_processed_docs);
             result.setSuccessful(false);
         }
         else {
             result.sampleEnd();
             result.setResponseCode("200");
-            result.setResponseMessage("OK " + BM25v.Main.total_processed_docs);
+            result.setResponseMessage("OK " + Main.total_processed_docs);
             result.setSuccessful(true);
         }
 

@@ -6,9 +6,9 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import Models.BM25;
-import Models.DocumentData;
-import Models.Query;
+import Hybridv.Models.BM25;
+import Hybridv.Models.DocumentData;
+import Hybridv.Models.Query;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 

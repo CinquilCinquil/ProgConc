@@ -51,6 +51,7 @@ public class Main {
 
             System.out.println("Processed "  + bm25.size() + " out of " + files.length + " files");
             System.out.println("Most relevant doc: " + bm25.get_most_relevant_doc());
+            total_processed_docs = bm25.size();
         }
         else {
             System.out.println("No documents found");

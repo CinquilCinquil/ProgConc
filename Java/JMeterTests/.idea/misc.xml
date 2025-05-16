@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/../Hybrid/pom.xml" />
         <option value="$PROJECT_DIR$/../Atomic/pom.xml" />
         <option value="$PROJECT_DIR$/../Platform/pom.xml" />
+        <option value="$PROJECT_DIR$/../Virtual/pom.xml" />
       </list>
     </option>
   </component>

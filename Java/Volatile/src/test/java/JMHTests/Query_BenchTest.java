@@ -1,6 +1,6 @@
 package JMHTests;
 
-import Models.Query;
+import Volatilev.Models.Query;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 

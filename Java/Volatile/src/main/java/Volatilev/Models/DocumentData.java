@@ -1,4 +1,4 @@
-package Models;
+package Volatilev.Models;
 
 import java.io.File;
 import java.io.IOException; 
@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.concurrent.CountDownLatch;
 
-import static Models.Utils.create_batch;
+import static Volatilev.Models.Utils.create_batch;
 import static java.lang.Math.max;
 
 public class DocumentData {
 
-    private final static int n_threads = 40;
-    private final int block_size = 5000;
+    public static int n_threads = 40;
+    public static int block_size = 5000;
     private final String DEFAULT_SEPARATION = " ";
 
     private final String name;

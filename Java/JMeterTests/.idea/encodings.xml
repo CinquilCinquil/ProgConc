@@ -11,6 +11,8 @@
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../Platform/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../Platform/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../Serial/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../Serial/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../Virtual/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../Virtual/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../Volatile/src/main/java" charset="UTF-8" />

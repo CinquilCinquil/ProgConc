@@ -1,7 +1,7 @@
 package JCStressTests;
 
-import Models.DocumentData;
-import Models.Query;
+import Volatilev.Models.DocumentData;
+import Volatilev.Models.Query;
 import org.openjdk.jcstress.annotations.*;
 import org.openjdk.jcstress.infra.results.I_Result;
 

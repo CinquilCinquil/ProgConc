@@ -1,4 +1,4 @@
-package Models;
+package Volatilev.Models;
 
 import java.util.ArrayList;
 import java.util.Arrays;

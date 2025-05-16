@@ -1,7 +1,7 @@
 package JCStressTests;
 
-import Models.DocumentData;
-import Models.Query;
+import Atomicv.Models.DocumentData;
+import Atomicv.Models.Query;
 import org.openjdk.jcstress.annotations.*;
 import org.openjdk.jcstress.infra.results.I_Result;
 

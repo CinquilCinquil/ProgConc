@@ -1,6 +1,8 @@
-import Models.BM25;
-import Models.DocumentData;
-import Models.Query;
+package Atomicv;
+
+import Atomicv.Models.BM25;
+import Atomicv.Models.DocumentData;
+import Atomicv.Models.Query;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.concurrent.CountDownLatch;
 
-import static Models.Utils.create_batch;
+import static Atomicv.Models.Utils.create_batch;
 
 /*
     Pdfs sourced from https://github.com/tpn/pdfs
@@ -16,18 +18,20 @@ import static Models.Utils.create_batch;
 
 public class Main {
 
-    static final int n_threads = 40;
+    public static int n_threads = 40;
+    public static String query_text = "partial function";
+    public static String path = "../../data/subset/";
+    public static int total_processed_docs = 0;
 
     static public void main(String[] args) {
 
         System.setErr(new PrintStream(OutputStream.nullOutputStream())); //TODO: Remove
 
-        String path = "../../data/subset/";
         File[] files = (new File(path)).listFiles();
 
         if (files != null) {
 
-            Query query = new Query("partial function");
+            Query query = new Query(query_text);
             BM25 bm25 = new BM25(query);
 
             final int actual_n_threads = Math.min(n_threads, files.length);
@@ -42,7 +46,7 @@ public class Main {
                 controller.await();
             }
             catch (InterruptedException e) {
-                System.out.println("One or more threads have been interrupted in Main");
+                System.out.println("One or more threads have been interrupted in Atomicv.Main");
             }
 
             System.out.println("Processed "  + bm25.size() + " out of " + files.length + " files");

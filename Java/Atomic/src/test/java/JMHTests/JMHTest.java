@@ -20,6 +20,6 @@ public class JMHTest {
 
         new Runner(opt).run();
 
-        //org.openjdk.jmh.Main.main(args);
+        //org.openjdk.jmh.Atomicv.Main.main(args);
     }
 }

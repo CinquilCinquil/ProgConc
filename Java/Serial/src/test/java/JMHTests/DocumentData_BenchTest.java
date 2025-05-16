@@ -1,7 +1,7 @@
 package JMHTests;
 
-import Models.DocumentData;
-import Models.Query;
+import Serialv.Models.DocumentData;
+import Serialv.Models.Query;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.openjdk.jmh.annotations.*;
@@ -9,10 +9,8 @@ import org.openjdk.jmh.infra.Blackhole;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Thread)

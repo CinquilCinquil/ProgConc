@@ -1,6 +1,6 @@
 package JMHTests;
 
-import Models.Query;
+import Serialv.Models.Query;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 

@@ -1,6 +1,8 @@
-import Models.BM25;
-import Models.DocumentData;
-import Models.Query;
+package Serialv;
+
+import Serialv.Models.BM25;
+import Serialv.Models.DocumentData;
+import Serialv.Models.Query;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,14 +13,17 @@ import java.io.IOException;
 
 public class Main {
 
+    public static String query_text = "partial function";
+    public static String path = "../../data/subset/";
+    public static int total_processed_docs = 0;
+
     static public void main(String args[]) {
 
-        String path = "../../data/subset/";
         File[] files = (new File(path)).listFiles();
 
         if (files != null) {
 
-            Query query = new Query("partial function");
+            Query query = new Query(query_text);
             BM25 bm25 = new BM25(query);
 
             for (File file : files) {
@@ -35,7 +40,7 @@ public class Main {
 
             System.out.println("Processed "  + bm25.size() + " out of " + files.length + " files");
             System.out.println("Most relevant doc: " + bm25.get_most_relevant_doc());
-
+            total_processed_docs = bm25.size();
         }
 		else {
             System.out.println("No documents found");

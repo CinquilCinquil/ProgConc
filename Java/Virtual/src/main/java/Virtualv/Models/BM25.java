@@ -1,14 +1,14 @@
-package Models;
+package Virtualv.Models;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
-import static Models.Utils.create_batch;
+import static Virtualv.Models.Utils.create_batch;
 
 public class BM25 {
 
     public double k = 1.5, b = 0.75; // BM25 parameters
-    private final static int n_threads = 40;
+    public static int n_threads = 40;
 
     private double avgdl; // Average document length
     private final Query query;

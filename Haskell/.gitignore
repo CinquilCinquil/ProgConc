@@ -1,2 +1,4 @@
 */compile_stuff/*
 */*.exe
+*.hi
+*.o

@@ -13,7 +13,7 @@ import Utils
 -- ':set -package directory' and ':set -package deepseq' before loading
 
 query = tokenizer "partial function" :: [Token]
-filepath = "../../data/subset/"
+filepath = "../../data/haskell_subset/"
 n_threads = 13
 
 main = do

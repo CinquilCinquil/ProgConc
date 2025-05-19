@@ -20,7 +20,7 @@ public class Main {
 
     public static int n_threads = 40;
     public static String query_text = "partial function";
-    public static String path = "../../data/subset/";
+    public static String path = "../../data/pdfs/";
     public static int total_processed_docs = 0;
 
     static public void main(String[] args) {

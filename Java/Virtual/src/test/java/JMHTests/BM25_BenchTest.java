@@ -128,8 +128,29 @@ public class BM25_BenchTest {
 
     @Benchmark
     public void test_auction_spawn_thread() {
+
+        final int n = e3;
+        CountDownLatch controller = new CountDownLatch(n);
+        BM25Copy bm25_copy = new BM25Copy(controller);
+
+        if (doc == null) {
+            System.out.println("JMH_Test docs IOException (id13). This should not happen.");
+            return;
+        }
+
         for (int i = 0; i < e2; i++) {
+            bm25_copy.add(doc);
+        }
+
+        for (int i = 0; i < n; i++) {
             bm25_copy.auction.spawn_thread(bm25_copy.get_doc_list(), query);
+        }
+
+        try {
+            controller.await();
+        }
+        catch (InterruptedException e) {
+            System.out.println("JMH_Test docs IOException (id11). This should not happen.");
         }
     }
 }

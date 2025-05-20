@@ -26,7 +26,6 @@ public class DocumentData_BenchTest {
     public static int e4 = 10000, e3 = 1000, e2 = 100, e1 = 10;
     public static Query query;
     public static DocumentData doc;
-    public static DocumentDataCopy doc_copy;
     public static String longText;
     public static Random random;
     public final static String test_dir = "../../data/tests/";
@@ -36,14 +35,14 @@ public class DocumentData_BenchTest {
 
         public CounterCopy counter;
 
-        public DocumentDataCopy() {
+        public DocumentDataCopy(CountDownLatch controller) {
             super();
-            counter = new CounterCopy();
+            counter = new CounterCopy(controller);
         }
 
         public static class CounterCopy extends Counter {
-            public CounterCopy() {
-                super(new CountDownLatch(0));
+            public CounterCopy(CountDownLatch controller) {
+                super(controller);
             }
         }
     }
@@ -51,7 +50,6 @@ public class DocumentData_BenchTest {
     @Setup
     public void setup() {
         query = new Query("cool example");
-        doc_copy = new DocumentDataCopy();
         random = new Random();
         try {
             doc = new DocumentData(name1, query);
@@ -105,10 +103,22 @@ public class DocumentData_BenchTest {
 
     @Benchmark
     public void test_counter_spawn_thread(Blackhole bh) {
-        for (int i = 0; i < e2; i++) {
+
+        final int n = e3;
+        CountDownLatch controller = new CountDownLatch(n);
+        DocumentDataCopy doc_copy = new DocumentDataCopy(controller);
+
+        for (int i = 0; i < n; i++) {
             ArrayList<StringTokenizer> sts = doc.get_tokenizers(longText);
             doc_copy.counter.spawn_thread(sts, "very cool example");
             bh.consume(sts);
+        }
+
+        try {
+            controller.await();
+        }
+        catch (InterruptedException e) {
+            System.out.println("JMH_Test docs IOException (id12). This should not happen.");
         }
     }
 }

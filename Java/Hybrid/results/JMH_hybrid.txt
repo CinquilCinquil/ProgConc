@@ -1,0 +1,626 @@
+"D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe" "-javaagent:D:\Program Files\JetBrains\IntelliJ IDEA 2024.3.5\lib\idea_rt.jar=52498" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath "D:\.IMD\2025.1\Prog Conc\BM25\Java\Hybrid\target\test-classes;D:\.IMD\2025.1\Prog Conc\BM25\Java\Hybrid\target\classes;C:\Users\carlo\.m2\repository\org\apache\pdfbox\pdfbox\2.0.32\pdfbox-2.0.32.jar;C:\Users\carlo\.m2\repository\org\apache\pdfbox\fontbox\2.0.32\fontbox-2.0.32.jar;C:\Users\carlo\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar;C:\Users\carlo\.m2\repository\org\openjdk\jcstress\jcstress-core\0.16\jcstress-core-0.16.jar;C:\Users\carlo\.m2\repository\net\sf\jopt-simple\jopt-simple\4.6\jopt-simple-4.6.jar;C:\Users\carlo\.m2\repository\net\java\dev\jna\jna\5.8.0\jna-5.8.0.jar;C:\Users\carlo\.m2\repository\net\java\dev\jna\jna-platform\5.8.0\jna-platform-5.8.0.jar;C:\Users\carlo\.m2\repository\org\openjdk\jmh\jmh-core\1.35\jmh-core-1.35.jar;C:\Users\carlo\.m2\repository\org\apache\commons\commons-math3\3.2\commons-math3-3.2.jar;C:\Users\carlo\.m2\repository\org\openjdk\jmh\jmh-generator-annprocess\1.35\jmh-generator-annprocess-1.35.jar" JMHTests.JMHTest -XX:+UseStringDeduplication
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_IDF
+
+# Run progress: 0,00% complete, ETA 00:28:40
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 15,018 ops/ms
+# Warmup Iteration   2: 15,046 ops/ms
+# Warmup Iteration   3: 15,029 ops/ms
+Iteration   1: 15,109 ops/ms
+Iteration   2: 15,066 ops/ms
+Iteration   3: 15,024 ops/ms
+Iteration   4: 15,144 ops/ms
+Iteration   5: 15,139 ops/ms
+Iteration   6: 15,207 ops/ms
+Iteration   7: 15,067 ops/ms
+Iteration   8: 15,115 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_IDF":
+  15,109 ±(99.9%) 0,109 ops/ms [Average]
+  (min, avg, max) = (15,024, 15,109, 15,207), stdev = 0,057
+  CI (99.9%): [15,000, 15,217] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_add
+
+# Run progress: 6,40% complete, ETA 00:28:42
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 3,715 ops/ms
+# Warmup Iteration   2: 3,781 ops/ms
+# Warmup Iteration   3: 3,797 ops/ms
+Iteration   1: 3,795 ops/ms
+Iteration   2: 3,801 ops/ms
+Iteration   3: 3,791 ops/ms
+Iteration   4: 3,803 ops/ms
+Iteration   5: 3,794 ops/ms
+Iteration   6: 3,792 ops/ms
+Iteration   7: 3,711 ops/ms
+Iteration   8: 3,732 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_add":
+  3,777 ±(99.9%) 0,067 ops/ms [Average]
+  (min, avg, max) = (3,711, 3,777, 3,803), stdev = 0,035
+  CI (99.9%): [3,710, 3,845] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_auction_challenge_highest_bidder_doc
+
+# Run progress: 12,79% complete, ETA 00:26:44
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 3,467 ops/ms
+# Warmup Iteration   2: 3,420 ops/ms
+# Warmup Iteration   3: 3,400 ops/ms
+Iteration   1: 3,190 ops/ms
+Iteration   2: 3,420 ops/ms
+Iteration   3: 3,413 ops/ms
+Iteration   4: 3,417 ops/ms
+Iteration   5: 3,433 ops/ms
+Iteration   6: 3,423 ops/ms
+Iteration   7: 3,431 ops/ms
+Iteration   8: 3,430 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_auction_challenge_highest_bidder_doc":
+  3,395 ±(99.9%) 0,159 ops/ms [Average]
+  (min, avg, max) = (3,190, 3,395, 3,433), stdev = 0,083
+  CI (99.9%): [3,236, 3,553] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_auction_spawn_thread
+
+# Run progress: 19,19% complete, ETA 00:24:46
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 0,139 ops/ms
+# Warmup Iteration   2: 0,132 ops/ms
+# Warmup Iteration   3: 0,121 ops/ms
+Iteration   1: 0,123 ops/ms
+Iteration   2: 0,123 ops/ms
+Iteration   3: 0,123 ops/ms
+Iteration   4: 0,123 ops/ms
+Iteration   5: 0,122 ops/ms
+Iteration   6: 0,122 ops/ms
+Iteration   7: 0,122 ops/ms
+Iteration   8: 0,123 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_auction_spawn_thread":
+  0,122 ±(99.9%) 0,001 ops/ms [Average]
+  (min, avg, max) = (0,122, 0,122, 0,123), stdev = 0,001
+  CI (99.9%): [0,121, 0,123] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_constructor
+
+# Run progress: 25,58% complete, ETA 00:22:49
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 4,814 ops/ms
+# Warmup Iteration   2: 5,001 ops/ms
+# Warmup Iteration   3: 4,960 ops/ms
+Iteration   1: 4,846 ops/ms
+Iteration   2: 4,859 ops/ms
+Iteration   3: 4,854 ops/ms
+Iteration   4: 4,783 ops/ms
+Iteration   5: 4,842 ops/ms
+Iteration   6: 4,852 ops/ms
+Iteration   7: 4,873 ops/ms
+Iteration   8: 4,867 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_constructor":
+  4,847 ±(99.9%) 0,053 ops/ms [Average]
+  (min, avg, max) = (4,783, 4,847, 4,873), stdev = 0,028
+  CI (99.9%): [4,794, 4,900] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_get_most_relevant_doc
+
+# Run progress: 31,98% complete, ETA 00:20:51
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 0,004 ops/ms
+# Warmup Iteration   2: 0,003 ops/ms
+# Warmup Iteration   3: 0,003 ops/ms
+Iteration   1: 0,003 ops/ms
+Iteration   2: 0,003 ops/ms
+Iteration   3: 0,003 ops/ms
+Iteration   4: 0,003 ops/ms
+Iteration   5: 0,003 ops/ms
+Iteration   6: 0,003 ops/ms
+Iteration   7: 0,003 ops/ms
+Iteration   8: 0,003 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_get_most_relevant_doc":
+  0,003 ±(99.9%) 0,001 ops/ms [Average]
+  (min, avg, max) = (0,003, 0,003, 0,003), stdev = 0,001
+  CI (99.9%): [0,003, 0,003] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_score
+
+# Run progress: 38,37% complete, ETA 00:18:57
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 3,299 ops/ms
+# Warmup Iteration   2: 3,303 ops/ms
+# Warmup Iteration   3: 3,289 ops/ms
+Iteration   1: 3,373 ops/ms
+Iteration   2: 3,052 ops/ms
+Iteration   3: 3,083 ops/ms
+Iteration   4: 3,007 ops/ms
+Iteration   5: 2,980 ops/ms
+Iteration   6: 2,913 ops/ms
+Iteration   7: 2,974 ops/ms
+Iteration   8: 2,946 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_score":
+  3,041 ±(99.9%) 0,277 ops/ms [Average]
+  (min, avg, max) = (2,913, 3,041, 3,373), stdev = 0,145
+  CI (99.9%): [2,764, 3,318] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.BM25_BenchTest.test_update_IDF
+
+# Run progress: 44,77% complete, ETA 00:16:59
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 10,500 ops/ms
+# Warmup Iteration   2: 8,783 ops/ms
+# Warmup Iteration   3: 8,579 ops/ms
+Iteration   1: 8,813 ops/ms
+Iteration   2: 9,484 ops/ms
+Iteration   3: 9,803 ops/ms
+Iteration   4: 10,257 ops/ms
+Iteration   5: 10,309 ops/ms
+Iteration   6: 10,248 ops/ms
+Iteration   7: 9,366 ops/ms
+Iteration   8: 8,319 ops/ms
+
+
+Result "JMHTests.BM25_BenchTest.test_update_IDF":
+  9,575 ±(99.9%) 1,394 ops/ms [Average]
+  (min, avg, max) = (8,319, 9,575, 10,309), stdev = 0,729
+  CI (99.9%): [8,181, 10,969] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.DocumentData_BenchTest.test_cleanString
+
+# Run progress: 51,16% complete, ETA 00:15:00
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 231,212 ops/s
+# Warmup Iteration   2: 238,889 ops/s
+# Warmup Iteration   3: 237,264 ops/s
+Iteration   1: 247,793 ops/s
+Iteration   2: 247,858 ops/s
+Iteration   3: 247,809 ops/s
+Iteration   4: 248,161 ops/s
+Iteration   5: 248,228 ops/s
+Iteration   6: 247,104 ops/s
+Iteration   7: 247,866 ops/s
+Iteration   8: 248,241 ops/s
+
+
+Result "JMHTests.DocumentData_BenchTest.test_cleanString":
+  247,883 ±(99.9%) 0,703 ops/s [Average]
+  (min, avg, max) = (247,104, 247,883, 248,241), stdev = 0,368
+  CI (99.9%): [247,180, 248,585] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 4 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.DocumentData_BenchTest.test_constructor
+
+# Run progress: 57,56% complete, ETA 00:13:02
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 0,149 ops/s
+# Warmup Iteration   2: 0,160 ops/s
+# Warmup Iteration   3: 0,161 ops/s
+Iteration   1: 0,162 ops/s
+Iteration   2: 0,162 ops/s
+Iteration   3: 0,162 ops/s
+Iteration   4: 0,162 ops/s
+
+
+Result "JMHTests.DocumentData_BenchTest.test_constructor":
+  0,162 ±(99.9%) 0,002 ops/s [Average]
+  (min, avg, max) = (0,162, 0,162, 0,162), stdev = 0,001
+  CI (99.9%): [0,160, 0,164] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.DocumentData_BenchTest.test_counter_spawn_thread
+
+# Run progress: 61,63% complete, ETA 00:11:58
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 92,201 ops/s
+# Warmup Iteration   2: 94,202 ops/s
+# Warmup Iteration   3: 81,362 ops/s
+Iteration   1: 83,032 ops/s
+Iteration   2: 83,727 ops/s
+Iteration   3: 83,747 ops/s
+Iteration   4: 88,821 ops/s
+Iteration   5: 87,278 ops/s
+Iteration   6: 86,276 ops/s
+Iteration   7: 83,630 ops/s
+Iteration   8: 83,846 ops/s
+
+
+Result "JMHTests.DocumentData_BenchTest.test_counter_spawn_thread":
+  85,044 ±(99.9%) 4,068 ops/s [Average]
+  (min, avg, max) = (83,032, 85,044, 88,821), stdev = 2,127
+  CI (99.9%): [80,977, 89,112] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.DocumentData_BenchTest.test_get_token_frequency
+
+# Run progress: 68,02% complete, ETA 00:09:58
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 23,418 ops/s
+# Warmup Iteration   2: 25,518 ops/s
+# Warmup Iteration   3: 25,322 ops/s
+Iteration   1: 25,137 ops/s
+Iteration   2: 25,172 ops/s
+Iteration   3: 25,136 ops/s
+Iteration   4: 25,521 ops/s
+Iteration   5: 25,404 ops/s
+Iteration   6: 25,335 ops/s
+Iteration   7: 25,319 ops/s
+Iteration   8: 25,152 ops/s
+
+
+Result "JMHTests.DocumentData_BenchTest.test_get_token_frequency":
+  25,272 ±(99.9%) 0,277 ops/s [Average]
+  (min, avg, max) = (25,136, 25,272, 25,521), stdev = 0,145
+  CI (99.9%): [24,995, 25,549] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.DocumentData_BenchTest.test_get_tokenizers
+
+# Run progress: 74,42% complete, ETA 00:07:57
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 59,802 ops/ms
+# Warmup Iteration   2: 60,704 ops/ms
+# Warmup Iteration   3: 57,387 ops/ms
+Iteration   1: 57,541 ops/ms
+Iteration   2: 57,696 ops/ms
+Iteration   3: 57,297 ops/ms
+Iteration   4: 57,188 ops/ms
+Iteration   5: 57,468 ops/ms
+Iteration   6: 57,383 ops/ms
+Iteration   7: 57,340 ops/ms
+Iteration   8: 57,494 ops/ms
+
+
+Result "JMHTests.DocumentData_BenchTest.test_get_tokenizers":
+  57,426 ±(99.9%) 0,303 ops/ms [Average]
+  (min, avg, max) = (57,188, 57,426, 57,696), stdev = 0,158
+  CI (99.9%): [57,123, 57,729] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.Query_BenchTest.test_constructor
+
+# Run progress: 80,81% complete, ETA 00:05:57
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 1,134 ops/ms
+# Warmup Iteration   2: 1,136 ops/ms
+# Warmup Iteration   3: 1,142 ops/ms
+Iteration   1: 1,133 ops/ms
+Iteration   2: 1,125 ops/ms
+Iteration   3: 1,121 ops/ms
+Iteration   4: 1,129 ops/ms
+Iteration   5: 1,134 ops/ms
+Iteration   6: 1,130 ops/ms
+Iteration   7: 1,126 ops/ms
+Iteration   8: 1,119 ops/ms
+
+
+Result "JMHTests.Query_BenchTest.test_constructor":
+  1,127 ±(99.9%) 0,010 ops/ms [Average]
+  (min, avg, max) = (1,119, 1,127, 1,134), stdev = 0,005
+  CI (99.9%): [1,117, 1,138] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.Utils_BenchTest.test_create_batch_Array
+
+# Run progress: 87,21% complete, ETA 00:03:58
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 2,831 ops/ms
+# Warmup Iteration   2: 2,831 ops/ms
+# Warmup Iteration   3: 2,830 ops/ms
+Iteration   1: 2,811 ops/ms
+Iteration   2: 2,659 ops/ms
+Iteration   3: 2,674 ops/ms
+Iteration   4: 2,663 ops/ms
+Iteration   5: 2,642 ops/ms
+Iteration   6: 2,662 ops/ms
+Iteration   7: 2,623 ops/ms
+Iteration   8: 2,625 ops/ms
+
+
+Result "JMHTests.Utils_BenchTest.test_create_batch_Array":
+  2,670 ±(99.9%) 0,114 ops/ms [Average]
+  (min, avg, max) = (2,623, 2,670, 2,811), stdev = 0,060
+  CI (99.9%): [2,555, 2,784] (assumes normal distribution)
+
+
+# JMH version: 1.35
+# VM version: JDK 24, OpenJDK 64-Bit Server VM, 24+36-3646
+# VM invoker: D:\Program Files\Java\.jdks\openjdk-24\bin\java.exe
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 10 s each
+# Measurement: 8 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: JMHTests.Utils_BenchTest.test_create_batch_ArrayList
+
+# Run progress: 93,60% complete, ETA 00:01:59
+# Fork: 1 of 1
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.openjdk.jmh.util.Utils (file:/C:/Users/carlo/.m2/repository/org/openjdk/jmh/jmh-core/1.35/jmh-core-1.35.jar)
+WARNING: Please consider reporting this to the maintainers of class org.openjdk.jmh.util.Utils
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+# Warmup Iteration   1: 6,097 ops/ms
+# Warmup Iteration   2: 5,929 ops/ms
+# Warmup Iteration   3: 5,955 ops/ms
+Iteration   1: 5,971 ops/ms
+Iteration   2: 5,858 ops/ms
+Iteration   3: 5,948 ops/ms
+Iteration   4: 5,975 ops/ms
+Iteration   5: 5,811 ops/ms
+Iteration   6: 5,946 ops/ms
+Iteration   7: 5,981 ops/ms
+Iteration   8: 5,939 ops/ms
+
+
+Result "JMHTests.Utils_BenchTest.test_create_batch_ArrayList":
+  5,928 ±(99.9%) 0,117 ops/ms [Average]
+  (min, avg, max) = (5,811, 5,928, 5,981), stdev = 0,061
+  CI (99.9%): [5,811, 6,046] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:30:59
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                                           Mode  Cnt    Score    Error   Units
+JMHTests.BM25_BenchTest.test_IDF                                   thrpt    8   15,109 ±  0,109  ops/ms
+JMHTests.BM25_BenchTest.test_add                                   thrpt    8    3,777 ±  0,067  ops/ms
+JMHTests.BM25_BenchTest.test_auction_challenge_highest_bidder_doc  thrpt    8    3,395 ±  0,159  ops/ms
+JMHTests.BM25_BenchTest.test_auction_spawn_thread                  thrpt    8    0,122 ±  0,001  ops/ms
+JMHTests.BM25_BenchTest.test_constructor                           thrpt    8    4,847 ±  0,053  ops/ms
+JMHTests.BM25_BenchTest.test_get_most_relevant_doc                 thrpt    8    0,003 ±  0,001  ops/ms
+JMHTests.BM25_BenchTest.test_score                                 thrpt    8    3,041 ±  0,277  ops/ms
+JMHTests.BM25_BenchTest.test_update_IDF                            thrpt    8    9,575 ±  1,394  ops/ms
+JMHTests.DocumentData_BenchTest.test_cleanString                   thrpt    8  247,883 ±  0,703   ops/s
+JMHTests.DocumentData_BenchTest.test_constructor                   thrpt    4    0,162 ±  0,002   ops/s
+JMHTests.DocumentData_BenchTest.test_counter_spawn_thread          thrpt    8   85,044 ±  4,068   ops/s
+JMHTests.DocumentData_BenchTest.test_get_token_frequency           thrpt    8   25,272 ±  0,277   ops/s
+JMHTests.DocumentData_BenchTest.test_get_tokenizers                thrpt    8   57,426 ±  0,303  ops/ms
+JMHTests.Query_BenchTest.test_constructor                          thrpt    8    1,127 ±  0,010  ops/ms
+JMHTests.Utils_BenchTest.test_create_batch_Array                   thrpt    8    2,670 ±  0,114  ops/ms
+JMHTests.Utils_BenchTest.test_create_batch_ArrayList               thrpt    8    5,928 ±  0,117  ops/ms
+
+Process finished with exit code 0

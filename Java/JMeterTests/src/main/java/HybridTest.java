@@ -28,9 +28,9 @@ public class HybridTest extends AbstractJavaSamplerClient implements Serializabl
         DocumentData.n_threads = Integer.parseInt(param_docdata_n_threads);
         DocumentData.block_size = Integer.parseInt(param_docdata_block_size);
 
-        BM25v.Main.main(null);
+        Main.main(null);
 
-        if (BM25v.Main.total_processed_docs == 0) {
+        if (Main.total_processed_docs == 0) {
             result.sampleEnd();
             result.setResponseCode("500");
             result.setResponseMessage("NOK " + Main.total_processed_docs);

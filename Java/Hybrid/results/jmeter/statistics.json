@@ -1,0 +1,34 @@
+{
+  "Hybrid Test Sample" : {
+    "transaction" : "Hybrid Test Sample",
+    "sampleCount" : 16,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 211636.3125,
+    "medianResTime" : 208947.5,
+    "minResTime" : 56312.0,
+    "maxResTime" : 377581.0,
+    "pct1ResTime" : 357417.5,
+    "pct2ResTime" : 377581.0,
+    "pct3ResTime" : 377581.0,
+    "throughput" : 0.022821931876533346,
+    "receivedKBytesPerSec" : 0.0,
+    "sentKBytesPerSec" : 0.0
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 16,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 211636.3125,
+    "medianResTime" : 208947.5,
+    "minResTime" : 56312.0,
+    "maxResTime" : 377581.0,
+    "pct1ResTime" : 357417.5,
+    "pct2ResTime" : 377581.0,
+    "pct3ResTime" : 377581.0,
+    "throughput" : 0.022821931876533346,
+    "receivedKBytesPerSec" : 0.0,
+    "sentKBytesPerSec" : 0.0
+  }
+}

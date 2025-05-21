@@ -18,9 +18,9 @@ public class SerialTest extends AbstractJavaSamplerClient implements Serializabl
         Main.query_text = param_query;
         Main.path = param_path;
 
-        BM25v.Main.main(null);
+        Main.main(null);
 
-        if (BM25v.Main.total_processed_docs == 0) {
+        if (Main.total_processed_docs == 0) {
             result.sampleEnd();
             result.setResponseCode("500");
             result.setResponseMessage("NOK " + Main.total_processed_docs);

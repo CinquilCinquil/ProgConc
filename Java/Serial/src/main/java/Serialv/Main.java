@@ -21,8 +21,6 @@ public class Main {
 
     static public void main(String args[]) {
 
-        System.setErr(new PrintStream(OutputStream.nullOutputStream())); //TODO: Remove
-
         File[] files = (new File(path)).listFiles();
 
         if (files != null) {

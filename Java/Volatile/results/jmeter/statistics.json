@@ -1,0 +1,34 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 14,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 216543.07142857145,
+    "medianResTime" : 189539.0,
+    "minResTime" : 99278.0,
+    "maxResTime" : 337973.0,
+    "pct1ResTime" : 333744.5,
+    "pct2ResTime" : 337973.0,
+    "pct3ResTime" : 337973.0,
+    "throughput" : 0.020847821328214697,
+    "receivedKBytesPerSec" : 0.0,
+    "sentKBytesPerSec" : 0.0
+  },
+  "Volatile Test Sample" : {
+    "transaction" : "Volatile Test Sample",
+    "sampleCount" : 14,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 216543.07142857145,
+    "medianResTime" : 189539.0,
+    "minResTime" : 99278.0,
+    "maxResTime" : 337973.0,
+    "pct1ResTime" : 333744.5,
+    "pct2ResTime" : 337973.0,
+    "pct3ResTime" : 337973.0,
+    "throughput" : 0.020847821328214697,
+    "receivedKBytesPerSec" : 0.0,
+    "sentKBytesPerSec" : 0.0
+  }
+}

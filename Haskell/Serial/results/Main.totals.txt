@@ -1,0 +1,22 @@
+GC                         45054389700ns   45.054s
+
+USER EVENTS (user events are corrected for GC)
+ProcessingDocs             31765102700ns   31.765s
+CalculatingScore            9137855800ns    9.138s
+GatheringDocs                   464700ns    0.000s
+TOTAL                      40903423200ns   40.903s
+
+THREAD EVENTS
+1                               106400ns    0.000s
+2                                81300ns    0.000s
+3                          35141549300ns   35.142s
+weak finalizer thread:4          26600ns    0.000s
+weak finalizer thread:5           2100ns    0.000s
+weak finalizer thread:6           2300ns    0.000s
+weak finalizer thread:7          15200ns    0.000s
+weak finalizer thread:8           5800ns    0.000s
+weak finalizer thread:9           6400ns    0.000s
+weak finalizer thread:10          3000ns    0.000s
+weak finalizer thread:11          9500ns    0.000s
+12                                6100ns    0.000s
+TOTAL                      35141814000ns   35.142s

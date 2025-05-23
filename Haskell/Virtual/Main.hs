@@ -14,7 +14,8 @@ import Utils
 
 query = tokenizer "partial function" :: [Token]
 filepath = "../../data/subset/"
-n_threads = 13
+n_threads_doc = 12
+n_threads_score = 12
 
 main = do
        doc_score_list <- calculate_score_list (process_docs gather_docs)
@@ -37,7 +38,7 @@ process_docs input = do
 
        -- dividing work between n_threads
        let process_function = mapM $ wrapper (get_doc_data query) (tokenizeDoc thread_print)
-       let n_threads_input = split_into_n_lists n_threads (zip mvar_doc_data pdf_names)
+       let n_threads_input = split_into_n_lists n_threads_doc (zip mvar_doc_data pdf_names)
        threadIds <- mapM (fork_aux forkIO process_function) n_threads_input
 
        putStrLn $ "Processing docs with: " ++ (show $ length threadIds) ++ " threads."
@@ -63,7 +64,7 @@ calculate_score_list input = do
 
        -- dividing work between n_threads
        doc_score_mvars <- create_emtpy_mvars n_processed_docs :: IO [MVar (String, Double)]
-       let n_threads_input = split_into_n_lists n_threads (zip doc_score_mvars documents)
+       let n_threads_input = split_into_n_lists n_threads_score (zip doc_score_mvars documents)
        threadIds <- mapM (fork_aux forkIO 
               (mapM $ multithread_doc_score (nDocs, avgdl, idfs) query)) n_threads_input
        

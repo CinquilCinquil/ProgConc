@@ -1,3 +1,4 @@
+-- use 
 module Main where
 
 import Control.Monad
@@ -8,27 +9,32 @@ import Pdf.Document
 import DocReader
 import BM25
 import Utils
+import Debug.Trace (traceEventIO)
 
 -- Obs: you gotta use ':set -package text',
 -- ':set -package directory' and ':set -package stm' before loading
 
 query = tokenizer "partial function" :: [Token]
-filepath = "../../data/haskell_subset/"
+filepath = "../../data/subset/"
 n_threads_doc = 12
 n_threads_score = 12
 
 main = do
        doc_score_list <- calculate_score_list (process_docs gather_docs)
        print $ fst (get_most_relevant_doc doc_score_list)
+       traceEventIO "STOP CalculatingScore"
 
 gather_docs :: IO [String]
 gather_docs = do
+       traceEventIO "START GatheringDocs"
        files <- getDirectoryContents filepath
        let pdf_names = filter (is_file_type "pdf") (map (filepath ++) files)
+       traceEventIO "STOP GatheringDocs"
        return pdf_names
 
 process_docs :: IO [String] -> IO [DocumentData]
 process_docs input = do
+       traceEventIO "START ProcessingDocs"
        pdf_names <- input
 
        let n_pdf_names = length pdf_names
@@ -59,10 +65,12 @@ process_docs input = do
        let documents = filter (not_empty . name) doc_data_list :: [DocumentData]
 
        putStrLn $ "Processed " ++ (show $ length documents) ++ " out of " ++ (show $ n_pdf_names)
+       traceEventIO "STOP ProcessingDocs"
        return documents
 
 calculate_score_list :: IO [DocumentData] -> IO [(String, Double)]
 calculate_score_list input = do
+       traceEventIO "START CalculatingScore"
        documents <- input
 
        let n_processed_docs = length documents

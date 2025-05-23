@@ -90,7 +90,7 @@ public class BM25 {
         return docs.size();
     }
 
-    // Method Necessary for JMH tests
+    // Method necessary for JMH tests
     public void resetAvgdl() {
         this.avgdl = 2 * docs.size();
     }

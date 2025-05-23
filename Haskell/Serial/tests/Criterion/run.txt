@@ -1,0 +1,5 @@
+ghc -O2 -package criterion -package directory -package text  -i../.. --make ProfileSerial
+
+--- move up twice
+
+./tests/Criterion/ProfileSerial.exe --output profile.html

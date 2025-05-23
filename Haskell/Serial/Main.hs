@@ -10,7 +10,7 @@ import Utils
 -- Obs: you gotta use ':set -package text' and ':set -package directory' before loading
 
 query = tokenizer "partial" :: [Token]
-filepath = "../../data/haskell_subset/" :: String
+filepath = "../../data/tests/" :: String
 
 main = do
        ---- Gathering docs

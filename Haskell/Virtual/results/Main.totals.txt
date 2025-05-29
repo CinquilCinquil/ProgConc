@@ -1,0 +1,56 @@
+GC                         30555893600ns   30.556s
+
+USER EVENTS (user events are corrected for GC)
+CalculatingScore           18193182300ns   18.193s
+ProcessingDocs             18185943300ns   18.186s
+GatheringDocs                   687200ns    0.001s
+TOTAL                      36379812800ns   36.380s
+
+THREAD EVENTS
+1                               335700ns    0.000s
+IOManagerThread:2                87900ns    0.000s
+3                              3130100ns    0.003s
+4                            172232000ns    0.172s
+5                           2534103300ns    2.534s
+6                            624824300ns    0.625s
+7                           2689387600ns    2.689s
+8                            735473300ns    0.735s
+9                            504566700ns    0.505s
+10                           623085400ns    0.623s
+11                         11281927000ns   11.282s
+12                          1260801900ns    1.261s
+13                         16651380500ns   16.651s
+14                          2349960800ns    2.350s
+15                           808142900ns    0.808s
+weak finalizer thread:16         24200ns    0.000s
+weak finalizer thread:17          3500ns    0.000s
+weak finalizer thread:18          3100ns    0.000s
+weak finalizer thread:19          2400ns    0.000s
+weak finalizer thread:20          2400ns    0.000s
+weak finalizer thread:21          2200ns    0.000s
+weak finalizer thread:22          2500ns    0.000s
+weak finalizer thread:23          3400ns    0.000s
+weak finalizer thread:24          1900ns    0.000s
+weak finalizer thread:25          1900ns    0.000s
+weak finalizer thread:26          1600ns    0.000s
+weak finalizer thread:27          3200ns    0.000s
+weak finalizer thread:28          2000ns    0.000s
+weak finalizer thread:29          3100ns    0.000s
+weak finalizer thread:30          7700ns    0.000s
+weak finalizer thread:31          2900ns    0.000s
+weak finalizer thread:32          2500ns    0.000s
+weak finalizer thread:33          2500ns    0.000s
+34                                2500ns    0.000s
+35                               12500ns    0.000s
+36                                2700ns    0.000s
+37                                2600ns    0.000s
+38                                4200ns    0.000s
+39                                 700ns    0.000s
+40                                2400ns    0.000s
+41                                1000ns    0.000s
+42                                 800ns    0.000s
+43                                1200ns    0.000s
+44                                2800ns    0.000s
+45                                 800ns    0.000s
+46                                7900ns    0.000s
+TOTAL                      40239554500ns   40.240s

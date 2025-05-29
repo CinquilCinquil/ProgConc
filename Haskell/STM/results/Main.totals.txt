@@ -1,0 +1,57 @@
+GC                         31016684800ns   31.017s
+
+USER EVENTS (user events are corrected for GC)
+CalculatingScore           18942790100ns   18.943s
+ProcessingDocs             18938746500ns   18.939s
+GatheringDocs                   489200ns    0.000s
+TOTAL                      37882025800ns   37.882s
+
+THREAD EVENTS
+1                               267900ns    0.000s
+IOManagerThread:2                66700ns    0.000s
+3                          19239567200ns   19.240s
+4                            166831300ns    0.167s
+5                           2397042700ns    2.397s
+6                            548188300ns    0.548s
+7                           2505590700ns    2.506s
+8                            681704700ns    0.682s
+9                            452614500ns    0.453s
+10                           531469400ns    0.531s
+11                         12236676100ns   12.237s
+12                          1078240500ns    1.078s
+13                         17445895500ns   17.446s
+14                          2207381600ns    2.207s
+15                           773809100ns    0.774s
+weak finalizer thread:16         27200ns    0.000s
+weak finalizer thread:17          2400ns    0.000s
+weak finalizer thread:18          4100ns    0.000s
+weak finalizer thread:19          4500ns    0.000s
+weak finalizer thread:20          2500ns    0.000s
+weak finalizer thread:21          3800ns    0.000s
+weak finalizer thread:22          2900ns    0.000s
+weak finalizer thread:23          2500ns    0.000s
+weak finalizer thread:24          2400ns    0.000s
+weak finalizer thread:25          2800ns    0.000s
+weak finalizer thread:26          2000ns    0.000s
+weak finalizer thread:27          2100ns    0.000s
+weak finalizer thread:28          1800ns    0.000s
+weak finalizer thread:29          2000ns    0.000s
+weak finalizer thread:30          3100ns    0.000s
+weak finalizer thread:31          3500ns    0.000s
+weak finalizer thread:32          3200ns    0.000s
+weak finalizer thread:33          3200ns    0.000s
+weak finalizer thread:34          2000ns    0.000s
+35                               19100ns    0.000s
+36                                9300ns    0.000s
+37                                7600ns    0.000s
+38                                9700ns    0.000s
+39                                8700ns    0.000s
+40                                7800ns    0.000s
+41                                9400ns    0.000s
+42                                8100ns    0.000s
+43                               12500ns    0.000s
+44                               11900ns    0.000s
+45                                7800ns    0.000s
+46                                7300ns    0.000s
+47                                7100ns    0.000s
+TOTAL                      60265550500ns   60.266s

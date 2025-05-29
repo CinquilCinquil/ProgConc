@@ -25,7 +25,11 @@ public class Main {
 
     static public void main(String[] args) {
 
-        System.setErr(new PrintStream(OutputStream.nullOutputStream())); //TODO: Remove
+		/* 
+            The reading process generates a lot of warnings for special characters that appear
+            in the pdfs. For practicality, I decided to omit them.
+        */
+        System.setErr(new PrintStream(OutputStream.nullOutputStream()));
 
         File[] files = (new File(path)).listFiles();
 

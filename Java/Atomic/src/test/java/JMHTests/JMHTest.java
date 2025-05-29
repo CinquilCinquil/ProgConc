@@ -10,10 +10,7 @@ public class JMHTest {
     public static void main(String[] args) throws Exception {
 
         Options opt = new OptionsBuilder()
-                .include(BM25_BenchTest.class.getSimpleName()
-                        + "|" + DocumentData_BenchTest.class.getSimpleName()
-                        + "|" + Query_BenchTest.class.getSimpleName()
-                        + "|" + Utils_BenchTest.class.getSimpleName())
+                .include(Main_BenchTest.class.getSimpleName())
                 .shouldDoGC(true)
                 .jvmArgs()
                 .build();
@@ -21,5 +18,16 @@ public class JMHTest {
         new Runner(opt).run();
 
         //org.openjdk.jmh.Atomicv.Main.main(args);
+
+        /*
+        Options opt = new OptionsBuilder()
+                .include(BM25_BenchTest.class.getSimpleName()
+                        + "|" + DocumentData_BenchTest.class.getSimpleName()
+                        + "|" + Query_BenchTest.class.getSimpleName()
+                        + "|" + Utils_BenchTest.class.getSimpleName())
+                .shouldDoGC(true)
+                .jvmArgs()
+                .build();
+         */
     }
 }

@@ -10,6 +10,15 @@ public class JMHTest {
     public static void main(String[] args) throws Exception {
 
         Options opt = new OptionsBuilder()
+                .include(Main_BenchTest.class.getSimpleName())
+                .shouldDoGC(true)
+                .jvmArgs()
+                .build();
+
+        new Runner(opt).run();
+        //org.openjdk.jmh.Volatilev.Main.main(args);
+        /*
+        Options opt = new OptionsBuilder()
                 .include(BM25_BenchTest.class.getSimpleName()
                         + "|" + DocumentData_BenchTest.class.getSimpleName()
                         + "|" + Query_BenchTest.class.getSimpleName()
@@ -17,8 +26,6 @@ public class JMHTest {
                 .shouldDoGC(true)
                 .jvmArgs()
                 .build();
-
-        new Runner(opt).run();
-        //org.openjdk.jmh.Volatilev.Main.main(args);
+         */
     }
 }

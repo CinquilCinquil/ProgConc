@@ -23,6 +23,12 @@ public class Main {
 
         File[] files = (new File(path)).listFiles();
 
+        /*
+            The reading process generates a lot of warnings for special characters that appear
+            in the pdfs. For practicality, I decided to omit them.
+         */
+        System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+
         if (files != null) {
 
             Query query = new Query(query_text);

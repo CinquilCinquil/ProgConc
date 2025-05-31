@@ -82,4 +82,4 @@ mainBench = do
         putStrLn $ fst $ get_most_relevant_doc (nDocs, avgdl, idfs) doc_data_list test_query
 
 -- use this to do a Macrobenchmark
---main = do defaultMain [bench "mainBench" $ nfIO mainBench]
+main = do defaultMain [bench "mainBench" $ nfIO mainBench]

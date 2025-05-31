@@ -36,7 +36,7 @@ The implemented Haskell versions are as follows:
 
 Considering runtime, the best version was the **Hybrid in Java with G1GC**. It had an average execution time of 45.2 seconds for a dataset of 1.1 GB.
 
-## A caveat
+## A Caveat
 
 The Haskell versions were executed with a subset of only 106 MB because of excessive memory use and prolonged execution times. This is probably due to my poor use of the language, not because of it's actual performance, since I had to learn Haskell from scratch for this project with no (practical) experience in functional programming 😅.
 
